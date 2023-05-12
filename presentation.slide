@@ -30,19 +30,19 @@ This talk is here to help demystify these formats, build a common vocabulary for
 
 ## strings
 
-JSON Example
+JSON
 
 .code main.go /START JSON OMIT/,/END JSON OMIT/
 
-YAML Example
+YAML
 
 .code main.go /START YAML OMIT/,/END YAML OMIT/
 
-TOML Example
+TOML
 
 .code main.go /START TOML OMIT/,/END TOML OMIT/
 
-HCL Example
+HCL
 
 .code main.go /START HCL OMIT/,/END HCL OMIT/
 
