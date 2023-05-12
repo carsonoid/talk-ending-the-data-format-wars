@@ -14,7 +14,7 @@ var jsonCode = `
 
 var yamlCode = `
 // START YAML OMIT
-key1: "line1\n1line2"
+key1: "line1\nline2"
 key2: |-
   line1
   line2

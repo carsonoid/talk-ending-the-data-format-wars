@@ -25,14 +25,18 @@ func sanitize(s string) []byte {
 	return out
 }
 
-func dumpResult(t string, obj any) {
-	fmt.Println("====== " + strings.ToUpper(t) + " ======")
+func dumpResult(example Example,s obj any) {
+	fmt.Println("====== " + strings.ToUpper(example.Type) + " ======")
 	litter.Dump(obj)
+	if example.Note != "" {
+		fmt.Println("* ", example.Note)
+	}
 }
 
 type Example struct {
 	Type string
 	Data string
+	Note string
 }
 
 func JSONExample(s string) Example {
@@ -77,21 +81,21 @@ func Print(example Example) {
 		if err != nil {
 			panic(err)
 		}
-		dumpResult(example.Type, jsonObj)
+		dumpResult(example, jsonObj)
 	case "yaml":
 		yamlObj := make(map[string]string)
 		err := yaml.Unmarshal(sanitize(example.Data), &yamlObj)
 		if err != nil {
 			panic(err)
 		}
-		dumpResult(example.Type, yamlObj)
+		dumpResult(example, yamlObj)
 	case "toml":
 		tomlObj := make(map[string]string)
 		err := toml.Unmarshal(sanitize(example.Data), &tomlObj)
 		if err != nil {
 			panic(err)
 		}
-		dumpResult(example.Type, tomlObj)
+		dumpResult(example, tomlObj)
 
 	case "hcl":
 		hclObj := make(map[string]string)
@@ -99,7 +103,7 @@ func Print(example Example) {
 		if err != nil {
 			panic(err)
 		}
-		dumpResult(example.Type, hclObj)
+		dumpResult(example, hclObj)
 	default:
 		panic("unknown type " + example.Type + " " + example.Data)
 	}
