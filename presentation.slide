@@ -1,0 +1,176 @@
+# Ending The Data Format Wars
+Truce time
+
+Carson Anderson
+DevX-O, Weave
+@carson_ops
+
+https://github.com/carsonoid/talk-ending-the-data-format-wars
+
+## Summary
+
+Having data in memory is great! But we often need to serialize that data out into a format that can be stored or shared between systems. When that time comes we need to turn to a format like YAML, JSON, TOML, HCL, or any of the other common formats for sharing data.
+
+But how well do you really know these formats? We all tend to have preferences but is there a clear winner? What do each of these formats look like? What can they describe? What can’t they describe? Why were they created? What are they good at? What are they bad at?
+
+This talk is here to help demystify these formats, build a common vocabulary for the data they contain and help explain what each is good at, bad at, and how to use any of them as a tool to make your life better. A deeper understanding of these tools can turn working with many modern systems from a slog to a joy.
+
+## Why do we care?
+
+## The contenders
+
+* **JSON**
+* **YAML**
+* **TOML**
+* HCL
+
+## Absolute Basics
+
+## objects/maps
+
+## strings
+
+JSON Example
+
+.code main.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML Example
+
+.code main.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML Example
+
+.code main.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL Example
+
+.code main.go /START HCL OMIT/,/END HCL OMIT/
+
+.play main.go /START RUN OMIT/,/END RUN OMIT/
+
+## strings2
+
+JSON Example
+
+.code main.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML Example
+
+.code main.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML Example
+
+.code main.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL Example
+
+.code main.go /START HCL OMIT/,/END HCL OMIT/
+
+.play main.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## strings s
+
+JSON
+
+.code example.json
+
+YAML
+
+.code example.yaml
+
+TOML
+
+.code example.toml
+
+HCL
+
+.code example.hcl
+
+.play main.go /START RUN OMIT/,/END RUN OMIT/
+
+## strings old
+
+JSON
+```json
+{"key":"my string"}
+```
+
+YAML
+```yaml
+key: my string
+key: "my string"
+```
+
+TOML
+```toml
+key = "my string"
+```
+
+HCL
+```hcl
+key = "my string"
+key = 'my string'
+```
+
+## multiline strings
+
+```json
+{"key":"line1\nline2"}
+```
+
+```yaml
+key: "line1\nline2"
+---
+key: |
+  line1
+  line2
+```
+
+```toml
+key = """
+my string"""
+```
+
+```hcl
+key = <<EOF
+line1
+line2
+EOF
+```
+
+## chars
+
+
+## bools
+## ints, floats
+## slices/lists
+## null
+## comments
+## dates/times
+
+# General Comparisons
+
+## Speed
+## Size
+## Standardization
+## Adoption
+## Packages
+
+## YAML Unique Features
+
+## Anchors
+## Document separator
+## Frontmatter?
+## Nested yaml strings
+
+
+## JSON Unique Features
+## Compactness
+## Can be single-line
+
+## TOML Unique Features
+## Deep modifications without nesting
+## ?
+
+## HCL Unique Features
