@@ -1,45 +1,36 @@
 package main
 
 import (
-	// import embed for effect to enable go:embed
 	"bytes"
-	_ "embed"
-	"encoding/json"
 
-	"github.com/hashicorp/hcl"
-	"github.com/hydronica/toml"
-	"github.com/sanity-io/litter"
-	"gopkg.in/yaml.v2"
+	"github.com/carsonoid/talk-ending-the-data-format-wars/internal/run"
 )
 
-// //go:embed example.json
-// var jsonBytes []byte
-
-var jsonBytes = sanitize([]byte(`
+var jsonData = `
 // START JSON OMIT
 {"key1":"line1\n1line2"}
 // END JSON OMIT
-`))
+`
 
-var yamlBytes = sanitize([]byte(`
+var yamlData = `
 // START YAML OMIT
 key1: "line1\n1line2"
 key2: |
   line1
   line2
 // END YAML OMIT
-`))
+`
 
-var tomlBytes = sanitize([]byte(`
+var tomlData = `
 // START TOML OMIT
 key1 = "line1\nline2"
 key2 = """
 line1
 line2"""
 // END TOML OMIT
-`))
+`
 
-var hclBytes = sanitize([]byte(`
+var hclData = `
 // START HCL OMIT
 key1 = "line1\nline2"
 key2 = <<EOF
@@ -47,16 +38,7 @@ line1
 line2
 EOF
 // END HCL OMIT
-`))
-
-// //go:embed example.yaml
-// var yamlBytes []byte
-
-// //go:embed example.toml
-// var tomlBytes []byte
-
-// //go:embed example.hcl
-// var hclBytes []byte
+`
 
 // sanitize removes all lines that end in OMIT
 func sanitize(b []byte) []byte {
@@ -69,35 +51,13 @@ func sanitize(b []byte) []byte {
 	}
 	return out
 }
-
 func main() {
-	jsonObj := make(map[string]string)
-	err := json.Unmarshal(jsonBytes, &jsonObj)
-	if err != nil {
-		panic(err)
-	}
-	litter.Dump(jsonObj)
-
-	yamlObj := make(map[string]string)
-	err = yaml.Unmarshal(yamlBytes, &yamlObj)
-	if err != nil {
-		panic(err)
-	}
-	litter.Dump(yamlObj)
-
-	tomlObj := make(map[string]string)
-	err = toml.Unmarshal(tomlBytes, &tomlObj)
-	if err != nil {
-		panic(err)
-	}
-	litter.Dump(tomlObj)
-
-	hclObj := make(map[string]string)
-	err = hcl.Unmarshal(hclBytes, &hclObj)
-	if err != nil {
-		panic(err)
-	}
-	litter.Dump(hclObj)
+	run.PrintAll(
+		run.JSONExample(jsonCode),
+		run.YAMLExample(yamlCode),
+		run.TOMLExample(tomlCode),
+		run.HCLExample(hclCode),
+	)
 }
 
 // START RUN OMIT

@@ -1,4 +1,4 @@
-module github.com/carsonoid/talk-all-the-mtls-in-k8s
+module github.com/carsonoid/talk-ending-the-data-format-wars
 
 go 1.19
 
