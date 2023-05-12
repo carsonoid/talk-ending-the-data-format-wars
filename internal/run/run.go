@@ -25,7 +25,7 @@ func sanitize(s string) []byte {
 	return out
 }
 
-func dumpResult(example Example,s obj any) {
+func dumpResult(example Example, obj any) {
 	fmt.Println("====== " + strings.ToUpper(example.Type) + " ======")
 	litter.Dump(obj)
 	if example.Note != "" {
