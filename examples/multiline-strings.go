@@ -6,13 +6,13 @@ import (
 	"github.com/carsonoid/talk-ending-the-data-format-wars/internal/run"
 )
 
-var jsonData = `
+var jsonCode = `
 // START JSON OMIT
 {"key1":"line1\n1line2"}
 // END JSON OMIT
 `
 
-var yamlData = `
+var yamlCode = `
 // START YAML OMIT
 key1: "line1\n1line2"
 key2: |
@@ -21,7 +21,7 @@ key2: |
 // END YAML OMIT
 `
 
-var tomlData = `
+var tomlCode = `
 // START TOML OMIT
 key1 = "line1\nline2"
 key2 = """
@@ -30,7 +30,7 @@ line2"""
 // END TOML OMIT
 `
 
-var hclData = `
+var hclCode = `
 // START HCL OMIT
 key1 = "line1\nline2"
 key2 = <<EOF
