@@ -17,28 +17,35 @@ import (
 
 var jsonBytes = sanitize([]byte(`
 // START JSON OMIT
-{"key1":"my string"}
+{"key1":"line1\n1line2"}
 // END JSON OMIT
 `))
 
 var yamlBytes = sanitize([]byte(`
 // START YAML OMIT
-key1: my string
-key2: 'my string'
-key3: "my string"
+key1: "line1\n1line2"
+key2: |
+  line1
+  line2
 // END YAML OMIT
 `))
 
 var tomlBytes = sanitize([]byte(`
 // START TOML OMIT
-key1 = "my string"
-key2 = 'my string'
+key1 = "line1\nline2"
+key2 = """
+line1
+line2"""
 // END TOML OMIT
 `))
 
 var hclBytes = sanitize([]byte(`
 // START HCL OMIT
-key1 = "my string"
+key1 = "line1\nline2"
+key2 = <<EOF
+line1
+line2
+EOF
 // END HCL OMIT
 `))
 

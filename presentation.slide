@@ -32,112 +32,41 @@ This talk is here to help demystify these formats, build a common vocabulary for
 
 JSON
 
-.code main.go /START JSON OMIT/,/END JSON OMIT/
+.code examples/strings.go /START JSON OMIT/,/END JSON OMIT/
 
 YAML
 
-.code main.go /START YAML OMIT/,/END YAML OMIT/
+.code examples/strings.go /START YAML OMIT/,/END YAML OMIT/
 
 TOML
 
-.code main.go /START TOML OMIT/,/END TOML OMIT/
+.code examples/strings.go /START TOML OMIT/,/END TOML OMIT/
 
 HCL
 
-.code main.go /START HCL OMIT/,/END HCL OMIT/
+.code examples/strings.go /START HCL OMIT/,/END HCL OMIT/
 
-.play main.go /START RUN OMIT/,/END RUN OMIT/
-
-## strings2
-
-JSON Example
-
-.code main.go /START JSON OMIT/,/END JSON OMIT/
-
-YAML Example
-
-.code main.go /START YAML OMIT/,/END YAML OMIT/
-
-TOML Example
-
-.code main.go /START TOML OMIT/,/END TOML OMIT/
-
-HCL Example
-
-.code main.go /START HCL OMIT/,/END HCL OMIT/
-
-.play main.go /START RUN OMIT/,/END RUN OMIT/
-
-
-## strings s
-
-JSON
-
-.code example.json
-
-YAML
-
-.code example.yaml
-
-TOML
-
-.code example.toml
-
-HCL
-
-.code example.hcl
-
-.play main.go /START RUN OMIT/,/END RUN OMIT/
-
-## strings old
-
-JSON
-```json
-{"key":"my string"}
-```
-
-YAML
-```yaml
-key: my string
-key: "my string"
-```
-
-TOML
-```toml
-key = "my string"
-```
-
-HCL
-```hcl
-key = "my string"
-key = 'my string'
-```
+.play examples/strings.go /START RUN OMIT/,/END RUN OMIT/
 
 ## multiline strings
 
-```json
-{"key":"line1\nline2"}
-```
+JSON
 
-```yaml
-key: "line1\nline2"
----
-key: |
-  line1
-  line2
-```
+.code examples/multiline-strings.go /START JSON OMIT/,/END JSON OMIT/
 
-```toml
-key = """
-my string"""
-```
+YAML
 
-```hcl
-key = <<EOF
-line1
-line2
-EOF
-```
+.code examples/multiline-strings.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/multiline-strings.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/multiline-strings.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/multiline-strings.go /START RUN OMIT/,/END RUN OMIT/
 
 ## chars
 

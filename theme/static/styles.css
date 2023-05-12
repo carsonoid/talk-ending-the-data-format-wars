@@ -452,7 +452,7 @@ div.playground {
 div.output {
   position: absolute;
   left: 0%;
-  top: 50%;
+  top: 0%;
   right: 40px;
   bottom: 40px;
   background: #202020;

@@ -69,21 +69,44 @@
 
           var td = document.createElement("td");
           td.style.border = "0";
-          // put el in a pre tag
+          // move all the children of el into a pre tag
           var pre = document.createElement("pre");
           pre.style.margin = "0";
           pre.style.padding = "0";
           pre.style.border = "0";
-          pre.appendChild(el);
+          while (el.firstChild) {
+            pre.appendChild(el.firstChild);
+          }
+
           td.appendChild(pre);
           tr.appendChild(td);
-          // reduce the height by 20%
-          tr.style.height = "80%";
 
           table.appendChild(tr);
           examples[i].parentNode.insertBefore(table, examples[i].nextSibling);
           examples[i].parentNode.removeChild(examples[i]);
         }
+      }
+
+      // hide all "div" elements with class "code" and "playground"
+      var divs = document.querySelectorAll("div.code, div.playground");
+      for (var i = 0; i < divs.length; i++) {
+        divs[i].style.display = "none";
+      }
+
+      // iterate over all buttons with class "run" and put them at the top right
+      // of the page
+      var buttons = document.querySelectorAll("button.run");
+      for (var i = 0; i < buttons.length; i++) {
+        var button = buttons[i];
+        button.textContent = "▶";
+        button.style.backgroundColor = "black";
+        button.style.color = "white";
+        button.style.fontSize = "2em";
+        button.style.position = "fixed";
+        button.style.top = "0";
+        button.style.right = "0";
+        button.style.margin = "0";
+        button.style.padding = "5px";
       }
     });
     </script>
