@@ -58,7 +58,7 @@
           // center the title vertically and horizontally
           title.style.verticalAlign = "middle";
           title.style.textAlign = "center";
-          title.style.width = "20%";
+          title.style.width = "15%";
           title.style.padding = "0";
           title.style.margin = "0";
           title.style.border = "0";
@@ -79,6 +79,26 @@
           }
 
           td.appendChild(pre);
+          tr.appendChild(td);
+
+          // if there is a quote block after the example, add it to the row
+          var td = document.createElement("td");
+          td.style.border = "0";
+          td.style.padding = "0";
+          td.style.margin = "0";
+          td.style.verticalAlign = "middle";
+          td.style.textAlign = "center";
+          td.style.fontSize = "1em";
+          var quote = examples[i].nextElementSibling.nextElementSibling;
+          if (quote && quote.tagName == "BLOCKQUOTE") {
+            quote.style.fontSize = "1em";
+            quote.style.margin = "0";
+            quote.style.marginLeft = "1em";
+            quote.style.padding = "0";
+            td.appendChild(quote);
+          } else {
+            td.textContent = " ";
+          }
           tr.appendChild(td);
 
           table.appendChild(tr);

@@ -58,6 +58,8 @@ YAML
 
 .code examples/multiline-strings.go /START YAML OMIT/,/END YAML OMIT/
 
+> See also: https://yaml-multiline.info/
+
 TOML
 
 .code examples/multiline-strings.go /START TOML OMIT/,/END TOML OMIT/
@@ -65,6 +67,9 @@ TOML
 HCL
 
 .code examples/multiline-strings.go /START HCL OMIT/,/END HCL OMIT/
+
+> Not exactly the same, leaves a trailing newline
+> Needs a *Terraform* `trim` function which is not pure HCL
 
 .play examples/multiline-strings.go /START RUN OMIT/,/END RUN OMIT/
 
