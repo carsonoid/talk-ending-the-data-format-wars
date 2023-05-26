@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/BurntSushi/toml"
 	"github.com/hashicorp/hcl"
-	"github.com/hydronica/toml"
 	"github.com/sanity-io/litter"
 	"gopkg.in/yaml.v2"
 )
@@ -26,8 +26,9 @@ func sanitize(s string) []byte {
 }
 
 func dumpResult(example Example, obj any) {
-	fmt.Println("====== " + strings.ToUpper(example.Type) + " ======")
-	litter.Dump(obj)
+	out := litter.Sdump(obj)
+	out = strings.ReplaceAll(out, "interface {}", "any")
+	fmt.Println(out)
 	if example.Note != "" {
 		fmt.Println("* ", example.Note)
 	}
@@ -74,36 +75,41 @@ func PrintAll(examples ...Example) {
 }
 
 func Print(example Example) {
+	fmt.Println("====== " + strings.ToUpper(example.Type) + " ======")
 	switch example.Type {
 	case "json":
-		jsonObj := make(map[string]string)
+		var jsonObj any
 		err := json.Unmarshal(sanitize(example.Data), &jsonObj)
 		if err != nil {
-			panic(err)
+			fmt.Println("Error: " + err.Error())
+		} else {
+			dumpResult(example, jsonObj)
 		}
-		dumpResult(example, jsonObj)
 	case "yaml":
-		yamlObj := make(map[string]string)
+		var yamlObj any
 		err := yaml.Unmarshal(sanitize(example.Data), &yamlObj)
 		if err != nil {
-			panic(err)
+			fmt.Println("Error: " + err.Error())
+		} else {
+			dumpResult(example, yamlObj)
 		}
-		dumpResult(example, yamlObj)
 	case "toml":
-		tomlObj := make(map[string]string)
+		var tomlObj any
 		err := toml.Unmarshal(sanitize(example.Data), &tomlObj)
 		if err != nil {
-			panic(err)
+			fmt.Println("Error: " + err.Error())
+		} else {
+			dumpResult(example, tomlObj)
 		}
-		dumpResult(example, tomlObj)
 
 	case "hcl":
-		hclObj := make(map[string]string)
+		var hclObj any
 		err := hcl.Unmarshal(sanitize(example.Data), &hclObj)
 		if err != nil {
-			panic(err)
+			fmt.Println("Error: " + err.Error())
+		} else {
+			dumpResult(example, hclObj)
 		}
-		dumpResult(example, hclObj)
 	default:
 		panic("unknown type " + example.Type + " " + example.Data)
 	}

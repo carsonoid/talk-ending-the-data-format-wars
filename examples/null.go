@@ -9,29 +9,29 @@ import (
 
 var jsonCode = `
 // START JSON OMIT
-{"key1":"my string"}
+{"key1":null}
 // END JSON OMIT
 `
 
 var yamlCode = `
 // START YAML OMIT
-key1: my string
-key2: 'my string'
-key3: "my string"
-key4: !!str true
+key1: null
+key2: Null
+key3: NULL
+key4: ~
+key5:
 // END YAML OMIT
 `
 
 var tomlCode = `
 // START TOML OMIT
-key1 = "my string"
-key2 = 'my string'
+# Can't do it!
 // END TOML OMIT
 `
 
 var hclCode = `
 // START HCL OMIT
-key1 = "my string"
+key1 = null
 // END HCL OMIT
 `
 

@@ -24,9 +24,162 @@ This talk is here to help demystify these formats, build a common vocabulary for
 * **TOML**
 * HCL
 
-## Absolute Basics
+## Disclaimer
 
-## objects/maps
+No matter which format you use, actual functionality depends on the exact
+code you are using. Just because something is or is not in the spec
+of any format doesn't guarantee anything.
+
+All examples executed here are done using popular Go parsers:
+
+* "encoding/json"
+* gopkg.in/yaml.v2
+* https://github.com/BurntSushi/toml
+* github.com/hashicorp/hcl
+
+
+## JSON: Primer
+
+JavaScript Object Notation
+
+The lowest common denominator for markup languages.
+
+* Available nearly everywhere
+* Most rigid
+* Can be represented without newlines
+
+---
+
+JSON
+
+.code examples/primer-json.go /START JSON OMIT/,/END JSON OMIT/
+
+JSON
+
+.code examples/primer-json.go /START JSON2 OMIT/,/END JSON2 OMIT/
+
+.play examples/primer-json.go /START RUN OMIT/,/END RUN OMIT/
+
+## YAML: Primer
+
+Yaml Ain't Markup Language
+
+Likely the most divisive option but still very prolific
+
+* Superset of JSON
+* Arguably Most flexible
+
+---
+
+YAML
+
+.code examples/primer-yaml.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/primer-yaml.go /START RUN OMIT/,/END RUN OMIT/
+
+## TOML: Primer
+
+Tom's Obvious Markup Language
+
+Maybe unheard of by most
+
+* Simplest for basic use cases
+* Less ambiguity than YAML
+* Allows avoiding of nesting
+
+---
+
+TOML
+
+.code examples/primer-toml.go /START TOML OMIT/,/END TOML OMIT/
+
+.play examples/primer-toml.go /START RUN OMIT/,/END RUN OMIT/
+
+## HCL: Primer
+
+Hashicorp Configuration Language
+
+Maybe unheard of by most
+
+* Mostly confined to Hashicorp tools
+
+---
+
+HCL
+
+.code examples/primer-hcl.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/primer-hcl.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## Head To Head Comparisons
+
+## objects/maps/tables
+
+Basic examples of key value pars are quite similar in all formats
+
+JSON
+
+.code examples/maps.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/maps.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/maps.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/maps.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/maps.go /START RUN OMIT/,/END RUN OMIT/
+
+## objects/maps/tables - nested
+
+JSON
+
+.code examples/maps-2.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/maps-2.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/maps-2.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/maps-2.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/maps-2.go /START RUN OMIT/,/END RUN OMIT/
+
+## objects/maps/tables - keys
+
+JSON
+
+.code examples/maps-3.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/maps-3.go /START YAML OMIT/,/END YAML OMIT/
+
+> This is the only format capable of representing maps with key
+> values of a type other than strings. Keys can be any `scalar` type (Ex: int, string, float, bool)
+
+TOML
+
+.code examples/maps-3.go /START TOML OMIT/,/END TOML OMIT/
+
+> Will not fail, but the key will be forced to be a string
+
+HCL
+
+.code examples/maps-3.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/maps-3.go /START RUN OMIT/,/END RUN OMIT/
 
 ## strings
 
@@ -73,14 +226,100 @@ HCL
 
 .play examples/multiline-strings.go /START RUN OMIT/,/END RUN OMIT/
 
-## chars
+## lists
 
+JSON
+
+.code examples/lists.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/lists.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/lists.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/lists.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/lists.go /START RUN OMIT/,/END RUN OMIT/
 
 ## bools
-## ints, floats
-## slices/lists
+
+JSON
+
+.code examples/bools.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/bools.go /START YAML OMIT/,/END YAML OMIT/
+
+> y|Y|yes|Yes|YES|n|N|no|No|NO
+> |true|True|TRUE|false|False|FALSE
+> |on|On|ON|off|Off|OFF
+
+TOML
+
+.code examples/bools.go /START TOML OMIT/,/END TOML OMIT/
+
+> Keys are always interpreted as strings, so no need to quote
+
+HCL
+
+.code examples/bools.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/bools.go /START RUN OMIT/,/END RUN OMIT/
+
 ## null
+
+JSON
+
+.code examples/null.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/null.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/null.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/null.go /START HCL OMIT/,/END HCL OMIT/
+
+> null is in the spec but has spotty support
+
+.play examples/null.go /START RUN OMIT/,/END RUN OMIT/
+
 ## comments
+
+JSON
+
+.code examples/comments.go /START JSON OMIT/,/END JSON OMIT/
+
+> Not supported
+
+YAML
+
+.code examples/comments.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/comments.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/comments.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/comments.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## ints
+## floats
+## slices/lists
 ## dates/times
 
 # General Comparisons

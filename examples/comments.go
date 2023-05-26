@@ -4,34 +4,30 @@ import (
 	"github.com/carsonoid/talk-ending-the-data-format-wars/internal/run"
 )
 
-// //go:embed example.json
-// var jsonBytes []byte
-
 var jsonCode = `
 // START JSON OMIT
-{"key1":"my string"}
+{}
 // END JSON OMIT
 `
 
 var yamlCode = `
 // START YAML OMIT
-key1: my string
-key2: 'my string'
-key3: "my string"
-key4: !!str true
+# key is the key
+key: value
 // END YAML OMIT
 `
 
 var tomlCode = `
 // START TOML OMIT
-key1 = "my string"
-key2 = 'my string'
+# key is the key
+key = "value"
 // END TOML OMIT
 `
 
 var hclCode = `
 // START HCL OMIT
-key1 = "my string"
+# key is the key
+key = "value"
 // END HCL OMIT
 `
 
