@@ -32,8 +32,8 @@ of any format doesn't guarantee anything.
 
 All examples executed here are done using popular Go parsers:
 
-* "encoding/json"
-* gopkg.in/yaml.v2
+* encoding/json (built in!)
+* gopkg.in/yaml.v3
 * https://github.com/BurntSushi/toml
 * github.com/hashicorp/hcl
 
@@ -317,10 +317,52 @@ HCL
 .play examples/comments.go /START RUN OMIT/,/END RUN OMIT/
 
 
-## ints
-## floats
-## slices/lists
-## dates/times
+## numbers
+
+JSON
+
+.code examples/numbers.go /START JSON OMIT/,/END JSON OMIT/
+
+> No distinction is made between ints or floats
+
+YAML
+
+.code examples/numbers.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/numbers.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/numbers.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/numbers.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## datetimes
+
+JSON
+
+.code examples/datetimes.go /START JSON OMIT/,/END JSON OMIT/
+
+> No native support
+
+YAML
+
+.code examples/datetimes.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/datetimes.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/datetimes.go /START HCL OMIT/,/END HCL OMIT/
+
+> No native support
+
+.play examples/datetimes.go /START RUN OMIT/,/END RUN OMIT/
 
 # General Comparisons
 

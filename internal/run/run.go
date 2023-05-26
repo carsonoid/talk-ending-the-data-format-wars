@@ -4,13 +4,29 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
+	"reflect"
 	"strings"
+	"time"
 
 	"github.com/BurntSushi/toml"
 	"github.com/hashicorp/hcl"
 	"github.com/sanity-io/litter"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
+
+func init() {
+	timeType := reflect.TypeOf(time.Time{})
+	litter.Config.DumpFunc = func(v reflect.Value, w io.Writer) bool {
+		if v.Type() != timeType {
+			return false
+		}
+
+		t := v.Interface().(time.Time)
+		fmt.Fprintf(w, `{%s}`, t.Format(time.RFC3339))
+		return true
+	}
+}
 
 // sanitize removes all lines that end in OMIT
 func sanitize(s string) []byte {
