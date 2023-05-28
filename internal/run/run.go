@@ -11,6 +11,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/hashicorp/hcl"
+	"github.com/mitchellh/go-wordwrap"
 	"github.com/sanity-io/litter"
 	"gopkg.in/yaml.v3"
 )
@@ -90,41 +91,53 @@ func PrintAll(examples ...Example) {
 	}
 }
 
+func PrintAllAs[T any](dest T, examples ...Example) {
+	for _, example := range examples {
+		PrintAs(dest, example)
+	}
+}
+
 func Print(example Example) {
+	PrintAs(map[string]any{}, example)
+}
+
+func PrintErr(err error) {
+	errStr := err.Error()
+	errStr = wordwrap.WrapString(errStr, 60)
+	fmt.Println("Error: " + errStr)
+}
+
+func PrintAs[T any](dest T, example Example) {
 	fmt.Println("====== " + strings.ToUpper(example.Type) + " ======")
 	switch example.Type {
 	case "json":
-		var jsonObj any
-		err := json.Unmarshal(sanitize(example.Data), &jsonObj)
+		err := json.Unmarshal(sanitize(example.Data), &dest)
 		if err != nil {
-			fmt.Println("Error: " + err.Error())
+			PrintErr(err)
 		} else {
-			dumpResult(example, jsonObj)
+			dumpResult(example, dest)
 		}
 	case "yaml":
-		var yamlObj any
-		err := yaml.Unmarshal(sanitize(example.Data), &yamlObj)
+		err := yaml.Unmarshal(sanitize(example.Data), &dest)
 		if err != nil {
-			fmt.Println("Error: " + err.Error())
+			PrintErr(err)
 		} else {
-			dumpResult(example, yamlObj)
+			dumpResult(example, dest)
 		}
 	case "toml":
-		var tomlObj any
-		err := toml.Unmarshal(sanitize(example.Data), &tomlObj)
+		err := toml.Unmarshal(sanitize(example.Data), &dest)
 		if err != nil {
-			fmt.Println("Error: " + err.Error())
+			PrintErr(err)
 		} else {
-			dumpResult(example, tomlObj)
+			dumpResult(example, dest)
 		}
 
 	case "hcl":
-		var hclObj any
-		err := hcl.Unmarshal(sanitize(example.Data), &hclObj)
+		err := hcl.Unmarshal(sanitize(example.Data), &dest)
 		if err != nil {
-			fmt.Println("Error: " + err.Error())
+			PrintErr(err)
 		} else {
-			dumpResult(example, hclObj)
+			dumpResult(example, dest)
 		}
 	default:
 		panic("unknown type " + example.Type + " " + example.Data)

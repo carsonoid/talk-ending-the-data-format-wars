@@ -42,12 +42,10 @@ var hclCode = `
 `
 
 func main() {
-	run.PrintAll(
-		run.JSONExample(jsonCode),
-		run.YAMLExample(yamlCode),
-		run.TOMLExample(tomlCode),
-		run.HCLExample(hclCode),
-	)
+	run.PrintAs(map[string]bool{}, run.JSONExample(jsonCode))
+	run.PrintAs(map[string]bool{}, run.YAMLExample(yamlCode))
+	run.PrintAs(map[string]bool{}, run.TOMLExample(tomlCode))
+	run.PrintAs(map[string]bool{}, run.HCLExample(hclCode))
 }
 
 // START RUN OMIT

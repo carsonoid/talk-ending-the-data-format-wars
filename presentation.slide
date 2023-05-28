@@ -112,11 +112,14 @@ HCL
 .play examples/primer-hcl.go /START RUN OMIT/,/END RUN OMIT/
 
 
-## Head To Head Comparisons
+## Basic Type Comparisons
+
+We will use this as the root type for all examples. This is because HCL
+and TOML both only support "documents" as the root target for encoding and decoding.
+
+This is not true of JSON and YAML which allow you to do encode and decode any value.
 
 ## objects/maps/tables
-
-Basic examples of key value pars are quite similar in all formats
 
 JSON
 
@@ -364,13 +367,207 @@ HCL
 
 .play examples/datetimes.go /START RUN OMIT/,/END RUN OMIT/
 
-# General Comparisons
+## Complex Structure Comparisons
 
-## Speed
-## Size
-## Standardization
-## Adoption
-## Packages
+So far we have simply compared basic types, but most use cases
+involve much more complex data types.
+
+## Objects with Arrays
+
+Create a document in each format that contains the following:
+
+* A list of bools
+* A list of numbers
+* A list of floats
+* A list of names
+
+## Objects with Arrays - JSON / YAML
+
+JSON
+
+.code examples/object-with-arrays1.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/object-with-arrays1.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/object-with-arrays1.go /START RUN OMIT/,/END RUN OMIT/
+
+## Objects with Arrays - TOML / HCL
+
+TOML
+
+.code examples/object-with-arrays2.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/object-with-arrays2.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/object-with-arrays2.go /START RUN OMIT/,/END RUN OMIT/
+
+## Array Of Objects/Maps - JSON / YAML
+
+Create a document in each format that contains the following:
+
+* An ordered list of people, with each having
+  * name - `string`
+  * age - `number`
+  * verified - `bool`
+
+## Array Of Objects/Maps - JSON / YAML
+
+JSON
+
+.code examples/array-objects1.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/array-objects1.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/array-objects1.go /START RUN OMIT/,/END RUN OMIT/
+
+## Array Of Objects - TOML / HCL
+
+TOML
+
+.code examples/array-objects2.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/array-objects2.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/array-objects2.go /START RUN OMIT/,/END RUN OMIT/
+
+## Real World Example - AWS RunInstancesRequest
+
+Let's create a portion of the AWS `RunInstances` request body in all formats
+
+.code examples/aws-create-instance/body.json
+
+## RunInstancesRequest - Go Types
+
+For a more real-world use case, we are going to use our own
+custom go types for the example
+
+.code internal/types/runInstances.go /START OMIT/,/END OMIT/
+
+## RunInstancesRequest - JSON
+
+JSON
+
+.code examples/aws-create-instance/json.go /START JSON OMIT/,/END JSON OMIT/
+
+.play examples/aws-create-instance/json.go /START RUN OMIT/,/END RUN OMIT/
+
+## RunInstancesRequest - YAML (from JSON)
+
+Remember, you can always just use JSON in YAML
+
+YAML
+
+.code examples/aws-create-instance/yaml.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/aws-create-instance/yaml.go /START RUN OMIT/,/END RUN OMIT/
+
+## RunInstancesRequest - YAML
+
+YAML
+
+.code examples/aws-create-instance/yaml-real.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/aws-create-instance/yaml-real.go /START RUN OMIT/,/END RUN OMIT/
+
+## RunInstancesRequest - TOML (Invalid)
+
+TOML
+
+.code examples/aws-create-instance/toml.go /START TOML OMIT/,/END TOML OMIT/
+
+This is **invalid** toml, but you might be tempted to think it would work. However,
+if you like this format, don't worry we will come back to it
+
+.play examples/aws-create-instance/toml.go /START RUN OMIT/,/END RUN OMIT/
+
+## RunInstancesRequest - TOML (valid)
+
+TOML
+
+.code examples/aws-create-instance/toml-fixed.go /START TOML OMIT/,/END TOML OMIT/
+
+You *could* fix it like this. But that really works against the design of the format
+
+.play examples/aws-create-instance/toml-fixed.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## RunInstancesRequest - TOML (Canonical)
+
+TOML
+
+.code examples/aws-create-instance/toml-valid.go /START TOML OMIT/,/END TOML OMIT/
+
+This is embracing TOML rather than working against it
+
+.play examples/aws-create-instance/toml-valid.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## RunInstancesRequest - HCL
+
+HCL
+
+.code examples/aws-create-instance/hcl.go /START HCL OMIT/,/END HCL OMIT/
+
+Interestingly, the invalid TOML example is actually valid and canonical HCL.
+
+.play examples/aws-create-instance/hcl.go /START RUN OMIT/,/END RUN OMIT/
+
+## Special Features
+
+Now, lets cover some features not supported across every format
+
+## One line documents - JSON & YAML
+
+This can be incredibly useful for things like logs. It makes it possible to
+emit structured logs but still read them line by line. JSON excels at this use case
+
+JSON
+
+.code examples/unique/oneline.go /START JSON OMIT/,/END JSON OMIT/
+
+Yaml also it this, but you really shouldn't do in the second format
+since it is error prone for large or complex data
+
+YAML
+
+.code examples/unique/oneline.go /START YAML OMIT/,/END YAML OMIT/
+
+YAML
+
+.code examples/unique/oneline.go /START YAML2 OMIT/,/END YAML2 OMIT/
+
+.play examples/unique/oneline.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## One line(ish) documents - TOML & HCL
+
+TOML and HCL can **almost** do our single line example. However both formats *must* have a key/value pair (map/table/etc) as the root data type of the document.
+
+However, if we use a wrapper type we can get to a single line
+
+.code examples/unique/oneline-ish.go /START WRAPPER OMIT/,/END WRAPPER OMIT/
+
+TOML
+
+.code examples/unique/oneline-ish.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/unique/oneline-ish.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/unique/oneline-ish.go /START RUN OMIT/,/END RUN OMIT/
+
+## Compactness
+## Can be single-line
+
 
 ## YAML Unique Features
 

@@ -107,10 +107,10 @@
         }
       }
 
-      // hide all "div" elements with class "code" and "playground"
-      var divs = document.querySelectorAll("div.code, div.playground");
-      for (var i = 0; i < divs.length; i++) {
-        divs[i].style.display = "none";
+      // hide all "div" elements with both "code" and "playground" classes
+      var playgrounds = document.querySelectorAll("div.code.playground");
+      for (var i = 0; i < playgrounds.length; i++) {
+        playgrounds[i].style.display = "none";
       }
 
       // iterate over all buttons with class "run" and put them at the top right
