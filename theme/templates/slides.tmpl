@@ -74,6 +74,8 @@
           pre.style.margin = "0";
           pre.style.padding = "0";
           pre.style.border = "0";
+          pre.style.overflow = "auto";
+          pre.style.width = "35em";
           while (el.firstChild) {
             pre.appendChild(el.firstChild);
           }
@@ -81,25 +83,39 @@
           td.appendChild(pre);
           tr.appendChild(td);
 
-          // if there is a quote block after the example, add it to the row
-          var td = document.createElement("td");
-          td.style.border = "0";
-          td.style.padding = "0";
-          td.style.margin = "0";
-          td.style.verticalAlign = "middle";
-          td.style.textAlign = "center";
-          td.style.fontSize = "1em";
+          // if there is a quote block after the example add it as a child of
+          // the td
           var quote = examples[i].nextElementSibling.nextElementSibling;
           if (quote && quote.tagName == "BLOCKQUOTE") {
             quote.style.fontSize = "1em";
             quote.style.margin = "0";
-            quote.style.marginLeft = "1em";
             quote.style.padding = "0";
+
+            // move the quote to the right and above the example
+            quote.style.float = "right";
+            quote.style.zIndex = "100";
             td.appendChild(quote);
-          } else {
-            td.textContent = " ";
           }
-          tr.appendChild(td);
+
+          // if there is a quote block after the example, add it to the row
+          // var td = document.createElement("td");
+          // td.style.border = "0";
+          // td.style.padding = "0";
+          // td.style.margin = "0";
+          // td.style.verticalAlign = "middle";
+          // td.style.textAlign = "center";
+          // td.style.fontSize = "1em";
+          // var quote = examples[i].nextElementSibling.nextElementSibling;
+          // if (quote && quote.tagName == "BLOCKQUOTE") {
+          //   quote.style.fontSize = "1em";
+          //   quote.style.margin = "0";
+          //   quote.style.marginLeft = "1em";
+          //   quote.style.padding = "0";
+          //   td.appendChild(quote);
+          // } else {
+          //   td.textContent = " ";
+          // }
+          // tr.appendChild(td);
 
           table.appendChild(tr);
           examples[i].parentNode.insertBefore(table, examples[i].nextSibling);
