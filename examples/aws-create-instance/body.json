@@ -1,0 +1,16 @@
+{
+    "ImageId": STRING,
+    "InstanceType": STRING,
+    "Placement": {
+         "AvailabilityZone": STRING
+    },
+    "BlockDeviceMappings": [
+       {
+          "DeviceName": STRING,
+          "Ebs": {
+             "DeleteOnTermination": BOOLEAN,
+             "VolumeSize": NUMBER
+          }
+       }
+    ]
+}
