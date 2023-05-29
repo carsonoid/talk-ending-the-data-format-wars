@@ -71,6 +71,7 @@
 
           var td = document.createElement("td");
           td.style.border = "0";
+          td.style.padding = "0";
           td.style.display = "flex";
           // move all the children of el into a pre tag
           var pre = document.createElement("pre");
@@ -95,6 +96,9 @@
             quote.style.margin = "0";
             quote.style.padding = "0";
             quote.style.width = "50%";
+            quote.style.display = "flex";
+            quote.style.alignItems = "center";
+            quote.style.textAlign = "center";
             td.appendChild(quote);
           }
 
@@ -125,9 +129,22 @@
       }
 
       // hide all "div" elements with both "code" and "playground" classes
+      // if they have a child pre with a child span of the content "// Run it!"
       var playgrounds = document.querySelectorAll("div.code.playground");
       for (var i = 0; i < playgrounds.length; i++) {
-        playgrounds[i].style.display = "none";
+        var playground = playgrounds[i];
+        // check all child pre elements for a span with the content "// Run it!"
+        var pres = playground.querySelectorAll("pre");
+        for (var j = 0; j < pres.length; j++) {
+          var pre = pres[j];
+          var spans = pre.querySelectorAll("span");
+          for (var k = 0; k < spans.length; k++) {
+            var span = spans[k];
+            if (span.textContent == "// Run it!") {
+              playground.style.display = "none";
+            }
+          }
+        }
       }
 
       // iterate over all buttons with class "run" and put them at the top right

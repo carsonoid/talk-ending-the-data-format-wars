@@ -16,7 +16,7 @@ var jsonCode = `
         "true": true,
         "num": false
     },
-	"array": [1, 2, 3]
+	"array": [1,2,3]
 }
 // END JSON OMIT
 `

@@ -11,12 +11,12 @@ InstanceType: t2.micro
 Placement:
   AvailabilityZone: us-east-1a
 BlockDeviceMappings:
-- DeviceName: /dev/sda1
-  Ebs:
-    DeleteOnTermination: true
-    VolumeSize: 8
-- DeviceName: /dev/sdb
-  Ebs: { DeleteOnTermination: true, VolumeSize: 20 }
+  - DeviceName: /dev/sda1
+    Ebs:
+      DeleteOnTermination: true
+      VolumeSize: 8
+  - DeviceName: /dev/sdb
+    Ebs: { DeleteOnTermination: true, VolumeSize: 20 }
 // END YAML OMIT
 `
 

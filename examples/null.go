@@ -25,7 +25,7 @@ key5:
 
 var tomlCode = `
 // START TOML OMIT
-# Can't do it!
+key1 = null
 // END TOML OMIT
 `
 

@@ -9,14 +9,15 @@ import (
 var jsonCode = `
 // START JSON OMIT
 {
-  "myList": [ "value1", "value2"]
+  "myList1": [ "value1", "value2" ],
+  "myList2": [ "value1", "value2" ]
 }
 // END JSON OMIT
 `
 
 var yamlCode = `
 // START YAML OMIT
-myList: [ "value1", "value2"]
+myList1: [value1, value2]
 myList2:
   - value1
   - value2
@@ -25,13 +26,21 @@ myList2:
 
 var tomlCode = `
 // START TOML OMIT
-myList = ["value1", "value2"]
+myList1 = ["value1","value2"]
+myList2 = [
+  "value1",
+  "value2",
+]
 // END TOML OMIT
 `
 
 var hclCode = `
 // START HCL OMIT
-myList = ["value1", "value2"]
+myList1 = [ "value1", "value2" ]
+myList2 = [
+  "value1",
+  "value2",
+]
 // END HCL OMIT
 `
 

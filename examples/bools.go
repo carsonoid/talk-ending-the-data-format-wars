@@ -18,10 +18,10 @@ var jsonCode = `
 
 var yamlCode = `
 // START YAML OMIT
-true1: true
+"true": true
 true2: yes
 true3: Y
-false1: false
+!!str false: false
 false2: no
 false3: N
 // END YAML OMIT

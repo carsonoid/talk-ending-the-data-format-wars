@@ -9,35 +9,36 @@ import (
 var jsonCode = `
 // START JSON OMIT
 {
-  "myObject": {
-	"key1": "value1",
-	"key 2": "value2"
-  }
+  "name": "Bob",
+  "job": { "title": "Developer", "years": 10 }
 }
 // END JSON OMIT
 `
 
 var yamlCode = `
 // START YAML OMIT
-myObject:
-  key1: value1
-  "key 2": value2
+name: Bob
+job:
+  title: Developer
+  years: 10
 // END YAML OMIT
 `
 
 var tomlCode = `
 // START TOML OMIT
-[myObject]
-key1 = "value1"
-"key 2" = "value2"
+name = "Bob"
+[job]
+title = "Developer"
+years = 10
 // END TOML OMIT
 `
 
 var hclCode = `
 // START HCL OMIT
-myObject {
-  key1 = "value1"
-  "key 2" = "value2\n"
+name = "Bob"
+job {
+  title = "Developer"
+  years = 10
 }
 // END HCL OMIT
 `

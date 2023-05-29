@@ -9,29 +9,35 @@ import (
 
 var jsonCode = `
 // START JSON OMIT
-{"key1":"my string"}
+{
+  "key1":"my string",
+  "key2":"\"quoted\" string",
+  "key3": "true"
+}
 // END JSON OMIT
 `
 
 var yamlCode = `
 // START YAML OMIT
 key1: my string
-key2: 'my string'
-key3: "my string"
-key4: !!str true
+key2: '"quoted" string'
+key3: !!str true
 // END YAML OMIT
 `
 
 var tomlCode = `
 // START TOML OMIT
 key1 = "my string"
-key2 = 'my string'
+key2 = '"quoted" string'
+key3 = "true"
 // END TOML OMIT
 `
 
 var hclCode = `
 // START HCL OMIT
 key1 = "my string"
+key2 = "\"quoted\" string"
+key3 = "true"
 // END HCL OMIT
 `
 

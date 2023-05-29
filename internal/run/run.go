@@ -98,12 +98,13 @@ func PrintAllAs[T any](dest T, examples ...Example) {
 }
 
 func Print(example Example) {
-	PrintAs(map[string]any{}, example)
+	var dest any
+	PrintAs(dest, example)
 }
 
 func PrintErr(err error) {
 	errStr := err.Error()
-	errStr = wordwrap.WrapString(errStr, 60)
+	errStr = wordwrap.WrapString(errStr, 70)
 	fmt.Println("Error: " + errStr)
 }
 

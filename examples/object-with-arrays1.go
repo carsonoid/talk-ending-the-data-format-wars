@@ -21,15 +21,15 @@ var jsonCode = `
 var yamlCode = `
 // START YAML OMIT
 bools: [ true, false, true ]
-numbers:
+numbers: # no spaces
 - 1
 - 2
 - 3
-floats:
+floats:  # two spaces
   - 1.1
   - 2.2
   - 3.3
-names:
+names:  # four spaces (any indentation works)
     - Alice
     - Bob
     - Carol

@@ -22,7 +22,7 @@ This talk is here to help demystify these formats, build a common vocabulary for
 * **JSON**
 * **YAML**
 * **TOML**
-* HCL
+* **HCL**
 
 ## Disclaimer
 
@@ -44,8 +44,9 @@ All examples executed here are done using popular Go parsers:
 
 The lowest common denominator for markup languages.
 
-* Available nearly everywhere
 * Most rigid
+* Whitespace is never important
+* Commas are important
 
 ---
 
@@ -53,17 +54,11 @@ JSON
 
 .code examples/primer-json.go /START JSON OMIT/,/END JSON OMIT/
 
-JSON
-
-.code examples/primer-json.go /START JSON2 OMIT/,/END JSON2 OMIT/
-
 .play examples/primer-json.go /START RUN OMIT/,/END RUN OMIT/
 
 ## YAML: Primer
 
 > Yaml Ain't Markup Language
-
-Likely the most divisive option but still very prolific
 
 * Superset of JSON
 * Arguably Most flexible
@@ -131,25 +126,19 @@ JSON
 
 .code examples/maps.go /START JSON OMIT/,/END JSON OMIT/
 
-> note
+> Trailing comma disallowed by strict parsers
 
 YAML
 
 .code examples/maps.go /START YAML OMIT/,/END YAML OMIT/
 
-> note
-
 TOML
 
 .code examples/maps.go /START TOML OMIT/,/END TOML OMIT/
 
-> note
-
 HCL
 
 .code examples/maps.go /START HCL OMIT/,/END HCL OMIT/
-
-> note
 
 .play examples/maps.go /START RUN OMIT/,/END RUN OMIT/
 
@@ -184,7 +173,7 @@ YAML
 .code examples/maps-3.go /START YAML OMIT/,/END YAML OMIT/
 
 > This is the only format capable of representing maps with key
-> values of a type other than strings. Keys can be any `scalar` type (Ex: int, string, float, bool)
+> values of a type other than strings
 
 TOML
 
@@ -257,9 +246,13 @@ TOML
 
 .code examples/lists.go /START TOML OMIT/,/END TOML OMIT/
 
+> Trailing comma allowed, whitespace discouraged when inline
+
 HCL
 
 .code examples/lists.go /START HCL OMIT/,/END HCL OMIT/
+
+> Trailing comma allowed, no whitespace required
 
 .play examples/lists.go /START RUN OMIT/,/END RUN OMIT/
 
@@ -273,8 +266,10 @@ YAML
 
 .code examples/bools.go /START YAML OMIT/,/END YAML OMIT/
 
-> y|Y|yes|Yes|YES|n|N|no|No|NO
-> |true|True|TRUE|false|False|FALSE
+> y|Y|yes|Yes|YES
+> |n|N|no|No|NO
+> |true|True|TRUE
+> |false|False|FALSE
 > |on|On|ON|off|Off|OFF
 
 TOML
@@ -286,6 +281,8 @@ TOML
 HCL
 
 .code examples/bools.go /START HCL OMIT/,/END HCL OMIT/
+
+> Quotes required
 
 .play examples/bools.go /START RUN OMIT/,/END RUN OMIT/
 
@@ -353,6 +350,8 @@ TOML
 HCL
 
 .code examples/numbers.go /START HCL OMIT/,/END HCL OMIT/
+
+> Does not support `_` in numbers
 
 .play examples/numbers.go /START RUN OMIT/,/END RUN OMIT/
 
@@ -491,6 +490,16 @@ YAML
 
 .play examples/aws-create-instance/yaml-real.go /START RUN OMIT/,/END RUN OMIT/
 
+## RunInstancesRequest - TOML (inline)
+
+TOML
+
+.code examples/aws-create-instance/toml-fixed.go /START TOML OMIT/,/END TOML OMIT/
+
+This works, but over-use of inline tables is can lead to ugly files
+
+.play examples/aws-create-instance/toml-fixed.go /START RUN OMIT/,/END RUN OMIT/
+
 ## RunInstancesRequest - TOML (Invalid)
 
 TOML
@@ -501,17 +510,6 @@ This is **invalid** toml, but you might be tempted to think it would work. Howev
 if you like this format, don't worry we will come back to it
 
 .play examples/aws-create-instance/toml.go /START RUN OMIT/,/END RUN OMIT/
-
-## RunInstancesRequest - TOML (valid)
-
-TOML
-
-.code examples/aws-create-instance/toml-fixed.go /START TOML OMIT/,/END TOML OMIT/
-
-You *could* fix it like this. But that really works against the design of the format
-
-.play examples/aws-create-instance/toml-fixed.go /START RUN OMIT/,/END RUN OMIT/
-
 
 ## RunInstancesRequest - TOML (Canonical)
 
@@ -541,13 +539,17 @@ Now, lets cover some features not supported across every format
 ## One line documents - JSON & YAML
 
 This can be incredibly useful for things like logs. It makes it possible to
-emit structured logs but still read them line by line. JSON excels at this use case
+emit structured logs but still read them line by line.
+
+---
+
+JSON excels at this use case
 
 JSON
 
 .code examples/unique/oneline.go /START JSON OMIT/,/END JSON OMIT/
 
-Yaml also it this, but you really shouldn't do in the second format
+Yaml also it this (if you just give it JSON, but you really shouldn't do in the second format
 since it is error prone for large or complex data
 
 YAML
@@ -578,6 +580,77 @@ HCL
 .code examples/unique/oneline-ish.go /START HCL OMIT/,/END HCL OMIT/
 
 .play examples/unique/oneline-ish.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## Serializing any type - JSON & YAML
+
+Both formats support serializing any data type directly, not just key value pairs
+
+JSON
+
+.code examples/unique/serialize-any.go /START JSON OMIT/,/END JSON OMIT/
+
+JSON
+
+.code examples/unique/serialize-any.go /START JSON2 OMIT/,/END JSON2 OMIT/
+
+JSON
+
+.code examples/unique/serialize-any.go /START JSON3 OMIT/,/END JSON3 OMIT/
+
+YAML
+
+.code examples/unique/serialize-any.go /START YAML OMIT/,/END YAML OMIT/
+
+YAML
+
+.code examples/unique/serialize-any.go /START YAML2 OMIT/,/END YAML2 OMIT/
+
+YAML
+
+.code examples/unique/serialize-any.go /START YAML3 OMIT/,/END YAML3 OMIT/
+
+YAML
+
+.code examples/unique/serialize-any.go /START YAML4 OMIT/,/END YAML4 OMIT/
+
+.play examples/unique/serialize-any.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## Serializing any type - TOML & HCL
+
+Not supported! Root type must be key/value pair
+
+TOML
+
+.code examples/unique/serialize-any-not-supported.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/unique/serialize-any-not-supported.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/unique/serialize-any-not-supported.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## Playgrounds
+
+The next 4 slides have editing enabled to facilitate answering questions
+
+## JSON Playground
+
+.play -edit examples/primer-json.go /START JSON OMIT/,/END JSON OMIT/
+
+## YAML Playground
+
+.play -edit examples/primer-yaml.go /START YAML OMIT/,/END YAML OMIT/
+
+## TOML Playground
+
+.play -edit examples/primer-toml.go /START TOML OMIT/,/END TOML OMIT/
+
+## HCL Playground
+
+.play -edit examples/primer-hcl.go /START HCL OMIT/,/END HCL OMIT/
 
 ## Compactness
 ## Can be single-line
