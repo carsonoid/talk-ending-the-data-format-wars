@@ -52,14 +52,16 @@
           var table = document.createElement("table");
           table.style.margin = "0";
           table.style.padding = "0";
+          table.style.width = "100%";
           var tr = document.createElement("tr");
 
           var title = document.createElement("td");
           // center the title vertically and horizontally
           title.style.verticalAlign = "middle";
           title.style.textAlign = "center";
-          title.style.width = "15%";
+          title.style.width = "4em";
           title.style.padding = "0";
+          title.style.paddingRight = "1em";
           title.style.margin = "0";
           title.style.border = "0";
           var p = document.createElement("p");
@@ -69,13 +71,15 @@
 
           var td = document.createElement("td");
           td.style.border = "0";
+          td.style.display = "flex";
           // move all the children of el into a pre tag
           var pre = document.createElement("pre");
           pre.style.margin = "0";
           pre.style.padding = "0";
           pre.style.border = "0";
           pre.style.overflow = "auto";
-          pre.style.width = "35em";
+          pre.style.flexGrow = "1";
+          pre.style.maxWidth = "35em";
           while (el.firstChild) {
             pre.appendChild(el.firstChild);
           }
@@ -90,10 +94,7 @@
             quote.style.fontSize = "1em";
             quote.style.margin = "0";
             quote.style.padding = "0";
-
-            // move the quote to the right and above the example
-            quote.style.float = "right";
-            quote.style.zIndex = "100";
+            quote.style.width = "50%";
             td.appendChild(quote);
           }
 

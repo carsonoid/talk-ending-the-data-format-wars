@@ -10,7 +10,8 @@ var jsonCode = `
 // START JSON OMIT
 {
   "key1": "value1",
-  "key 2": "value2"
+  "key 2": "value2",
+  "1": "value3"
 }
 // END JSON OMIT
 `
@@ -19,9 +20,7 @@ var yamlCode = `
 // START YAML OMIT
 key1: value1
 "key 2": value2
-data:
- 1: 1
- 2: 2
+!!str 1: value3
 // END YAML OMIT
 `
 
@@ -29,6 +28,7 @@ var tomlCode = `
 // START TOML OMIT
 key1 = "value1"
 "key 2" = "value2"
+1 = "value3"
 // END TOML OMIT
 `
 
@@ -36,6 +36,7 @@ var hclCode = `
 // START HCL OMIT
 key1 = "value1"
 "key 2" = "value2"
+"1" = "value3"
 // END HCL OMIT
 `
 

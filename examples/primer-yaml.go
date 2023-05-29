@@ -10,6 +10,7 @@ str: my string
 bool: my bool
 map:
   "true": true
+  !!str false: false
   num: false
 array:
   - 1

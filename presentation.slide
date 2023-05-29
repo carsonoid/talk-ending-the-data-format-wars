@@ -40,13 +40,12 @@ All examples executed here are done using popular Go parsers:
 
 ## JSON: Primer
 
-JavaScript Object Notation
+> JavaScript Object Notation
 
 The lowest common denominator for markup languages.
 
 * Available nearly everywhere
 * Most rigid
-* Can be represented without newlines
 
 ---
 
@@ -62,7 +61,7 @@ JSON
 
 ## YAML: Primer
 
-Yaml Ain't Markup Language
+> Yaml Ain't Markup Language
 
 Likely the most divisive option but still very prolific
 
@@ -79,7 +78,7 @@ YAML
 
 ## TOML: Primer
 
-Tom's Obvious Markup Language
+> Tom's Obvious Markup Language
 
 Maybe unheard of by most
 
@@ -97,11 +96,11 @@ TOML
 
 ## HCL: Primer
 
-Hashicorp Configuration Language
-
-Maybe unheard of by most
+> Hashicorp Configuration Language
 
 * Mostly confined to Hashicorp tools
+* Designed as a "syntax" more than a data format
+* A decent mix of JSON/YAML/TOML
 
 ---
 
@@ -114,6 +113,13 @@ HCL
 
 ## Basic Type Comparisons
 
+All the comparisons will use a key/value set as the root type. Depending on
+the format this is going to be called somethign differnet
+
+* map - YAML
+* object - JSON, HCL
+* table - TOML
+
 We will use this as the root type for all examples. This is because HCL
 and TOML both only support "documents" as the root target for encoding and decoding.
 
@@ -125,17 +131,25 @@ JSON
 
 .code examples/maps.go /START JSON OMIT/,/END JSON OMIT/
 
+> note
+
 YAML
 
 .code examples/maps.go /START YAML OMIT/,/END YAML OMIT/
+
+> note
 
 TOML
 
 .code examples/maps.go /START TOML OMIT/,/END TOML OMIT/
 
+> note
+
 HCL
 
 .code examples/maps.go /START HCL OMIT/,/END HCL OMIT/
+
+> note
 
 .play examples/maps.go /START RUN OMIT/,/END RUN OMIT/
 
