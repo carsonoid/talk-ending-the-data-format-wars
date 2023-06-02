@@ -6,41 +6,47 @@ import (
 	"github.com/carsonoid/talk-ending-the-data-format-wars/internal/run"
 )
 
+const target = `
+// START TARGET OMIT
+line1
+  line2
+    line3
+	< tab indented
+// END TARGET OMIT
+`
+
 var jsonCode = `
 // START JSON OMIT
-{ "myList": [ "value", false ] }
+{"key1":"line1\n  line2\n    line3\n\t< tab indented"}
 // END JSON OMIT
 `
 
 var yamlCode = `
 // START YAML OMIT
-myList1: [ "value", false ]
-myList2: [
-	value, false,
-]
-myList3:
-  - value
-  - !!bool false # type tag not required but valid
+key1: "line1\n  line2\n    line3\n\t< tab indented"
+key2: |-
+  line1
+    line2
+      line3
+  	< tab indented
 // END YAML OMIT
 `
 
 var tomlCode = `
 // START TOML OMIT
-myList1 = ["value",false]
-myList2 = [
-  "value",
-  false,
-]
+key1 = "line1\n  line2\n    line3\n\t< tab indented"
+key2 = """
+line1
+  line2
+    line3
+	< tab indented"""
 // END TOML OMIT
 `
 
 var hclCode = `
 // START HCL OMIT
-myList1 = [ "value", false ]
-myList2 = [
-  "value1",
-  false,
-]
+key1 = "line1\n  line2\n    line3\n\t< tab indented"
+# again, heredocs only *almost* work so they are not shown here
 // END HCL OMIT
 `
 

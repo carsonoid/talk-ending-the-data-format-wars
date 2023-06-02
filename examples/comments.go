@@ -13,21 +13,32 @@ var jsonCode = `
 var yamlCode = `
 // START YAML OMIT
 # key is the key
-key: value
+str1: value
+str2: "value" # comments can come after
+str3: value # comments can come after
+str4: "use quotes to keep # comments that come after"
+str5: >-
+  use a block scalar to keep # comments that come after
+
+bool: true # comments can come after
+num: 1 # comments can come after
 // END YAML OMIT
 `
 
 var tomlCode = `
 // START TOML OMIT
 # key is the key
-key = "value"
+key1 = "value"
+key2 = 'value' # comments can come after
+key3 = true # comments can come after
 // END TOML OMIT
 `
 
 var hclCode = `
 // START HCL OMIT
 # key is the key
-key = "value"
+key1 = "value"
+key2 = "value" # comments can come after
 // END HCL OMIT
 `
 

@@ -75,8 +75,6 @@ YAML
 
 > Tom's Obvious Markup Language
 
-Maybe unheard of by most
-
 * Simplest for basic use cases
 * Less ambiguity than YAML
 * Allows avoiding of nesting
@@ -109,18 +107,37 @@ HCL
 ## Basic Type Comparisons
 
 All the comparisons will use a key/value set as the root type. Depending on
-the format this is going to be called somethign differnet
+the format this is going to be called something differnet
 
 * map - YAML
 * object - JSON, HCL
 * table - TOML
 
-We will use this as the root type for all examples. This is because HCL
-and TOML both only support "documents" as the root target for encoding and decoding.
+> We will use this as the root type for all examples. This is because HCL
+> and TOML are both "document" markup languages and require a key value pair as
+> the root data structure
 
-This is not true of JSON and YAML which allow you to do encode and decode any value.
+## objects/maps/tables - basic
 
-## objects/maps/tables
+JSON
+
+.code examples/maps-basic.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/maps-basic.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/maps-basic.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/maps-basic.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/maps-basic.go /START RUN OMIT/,/END RUN OMIT/
+
+## objects/maps/tables - advanced
 
 JSON
 
@@ -132,13 +149,20 @@ YAML
 
 .code examples/maps.go /START YAML OMIT/,/END YAML OMIT/
 
+> Can use a data type prefix to disambiguate
+
 TOML
 
 .code examples/maps.go /START TOML OMIT/,/END TOML OMIT/
 
+> Quotes only required for keys with spaces, otherwise all keys
+> are always read as strings
+
 HCL
 
 .code examples/maps.go /START HCL OMIT/,/END HCL OMIT/
+
+> Keys must be strings and must be quoted if they contain no letters
 
 .play examples/maps.go /START RUN OMIT/,/END RUN OMIT/
 
@@ -164,9 +188,15 @@ HCL
 
 ## objects/maps/tables - keys
 
+Almost all formats require string keys for maps
+
+---
+
 JSON
 
 .code examples/maps-3.go /START JSON OMIT/,/END JSON OMIT/
+
+> 💀 invalid!
 
 YAML
 
@@ -185,33 +215,99 @@ HCL
 
 .code examples/maps-3.go /START HCL OMIT/,/END HCL OMIT/
 
+> 💀 invalid!
+
 .play examples/maps-3.go /START RUN OMIT/,/END RUN OMIT/
 
-## strings
+## strings - JSON
+
+Strings must always be quoted with double quotes. Nested quotes must be escaped
+
+---
 
 JSON
 
-.code examples/strings.go /START JSON OMIT/,/END JSON OMIT/
+.code examples/strings-json.go /START JSON OMIT/,/END JSON OMIT/
+
+.play examples/strings-json.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## strings - YAML
+
+Strings may be declared in many formats: unquoted, double quoted, single quoted, declared with a type prefix, or as a "block scalar"
+
+---
 
 YAML
 
-.code examples/strings.go /START YAML OMIT/,/END YAML OMIT/
+.code examples/strings-yaml.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/strings-yaml.go /START RUN OMIT/,/END RUN OMIT/
+
+## strings - TOML
+
+Strings may be declared in a few formats: double quoted, or with triple versions of both kinds
+
+---
 
 TOML
 
-.code examples/strings.go /START TOML OMIT/,/END TOML OMIT/
+.code examples/strings-toml.go /START TOML OMIT/,/END TOML OMIT/
+
+.play examples/strings-toml.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## strings - HCL
 
 HCL
 
-.code examples/strings.go /START HCL OMIT/,/END HCL OMIT/
+.code examples/strings-hcl.go /START HCL OMIT/,/END HCL OMIT/
 
-.play examples/strings.go /START RUN OMIT/,/END RUN OMIT/
+.play examples/strings-hcl.go /START RUN OMIT/,/END RUN OMIT/
+
+## long strings
+
+
+> This is a very long string that has no newlines but it includes 'single' and "double" quotes
+
+---
+
+.code examples/strings-long.go /START TARGET OMIT/,/END TARGET OMIT/
+
+## long strings
+
+JSON
+
+.code examples/strings-long.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/strings-long.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/strings-long.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/strings-long.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/strings-long.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## multiline strings
+
+We will start with rendering a basic example:
+
+.code examples/multiline-strings.go /START TARGET OMIT/,/END TARGET OMIT/
 
 ## multiline strings
 
 JSON
 
 .code examples/multiline-strings.go /START JSON OMIT/,/END JSON OMIT/
+
+> Must use escapes
 
 YAML
 
@@ -227,10 +323,48 @@ HCL
 
 .code examples/multiline-strings.go /START HCL OMIT/,/END HCL OMIT/
 
-> Not exactly the same, leaves a trailing newline
-> Needs a *Terraform* `trim` function which is not pure HCL
+>  ⚠️ Not exactly the same! Leaves a trailing newline and needs a *Terraform* `trim` function which is not pure HCL
 
 .play examples/multiline-strings.go /START RUN OMIT/,/END RUN OMIT/
+
+## multiline strings - complex
+
+Now a more complex example
+
+.code examples/multiline-strings-complex.go /START TARGET OMIT/,/END TARGET OMIT/
+
+## multiline strings - complex
+
+JSON
+
+.code examples/multiline-strings-complex.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/multiline-strings-complex.go /START YAML OMIT/,/END YAML OMIT/
+
+> key2 == 😱
+
+TOML
+
+.code examples/multiline-strings-complex.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/multiline-strings-complex.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/multiline-strings-complex.go /START RUN OMIT/,/END RUN OMIT/
+
+## lists
+
+In all formats lists are *ordered* and can contain zero to N of any type.
+
+---
+Task - make a list of string `"value"` and bool `false`
+
+* value
+* `false`
+
 
 ## lists
 
@@ -241,6 +375,8 @@ JSON
 YAML
 
 .code examples/lists.go /START YAML OMIT/,/END YAML OMIT/
+
+> a bare 'false would 
 
 TOML
 
@@ -257,6 +393,14 @@ HCL
 .play examples/lists.go /START RUN OMIT/,/END RUN OMIT/
 
 ## bools
+
+Task - make a map:
+
+* string key `"true"` to bool value `true`
+* string key `"false"` to bool value `false`
+
+## bools
+
 
 JSON
 
@@ -288,6 +432,14 @@ HCL
 
 ## null
 
+Sometimes we want to include keys in objects but exlicitly set them to *nothing*
+
+---
+
+Task - make a map of string "key" to `null`
+
+## null
+
 JSON
 
 .code examples/null.go /START JSON OMIT/,/END JSON OMIT/
@@ -300,11 +452,13 @@ TOML
 
 .code examples/null.go /START TOML OMIT/,/END TOML OMIT/
 
+> 💀 explicitly not supported
+
 HCL
 
 .code examples/null.go /START HCL OMIT/,/END HCL OMIT/
 
-> null is in the spec but has spotty support
+> ⚠️ null is in the spec but is not well supported
 
 .play examples/null.go /START RUN OMIT/,/END RUN OMIT/
 
@@ -631,6 +785,19 @@ HCL
 
 .play examples/unique/serialize-any-not-supported.go /START RUN OMIT/,/END RUN OMIT/
 
+## Anchors - YAML
+
+Not supported! Root type must be key/value pair
+
+TOML
+
+.code examples/unique/serialize-any-not-supported.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/unique/serialize-any-not-supported.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/unique/serialize-any-not-supported.go /START RUN OMIT/,/END RUN OMIT/
 
 ## Playgrounds
 

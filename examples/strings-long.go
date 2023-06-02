@@ -8,43 +8,40 @@ import (
 
 const target = `
 // START TARGET OMIT
-line1
-line2
+This is a very long string that has no newlines but it includes 'single' and "double" quotes
 // END TARGET OMIT
 `
 
 var jsonCode = `
 // START JSON OMIT
-{"key1":"line1\n1line2"}
+{"key1":"This is a very long string that has no newlines but it includes 'single' and \"double\" quotes"}
 // END JSON OMIT
 `
 
 var yamlCode = `
 // START YAML OMIT
-key1: "line1\nline2"
-key2: |-
-  line1
-  line2
+key1: This is a very long string that has no newlines but it includes 'single' and "double" quotes
+key2: "This is a very long string that has no newlines but it includes 'single' and \"double\" quotes"
+key3: >-
+  this is a very long string that
+  has no newlines but it includes
+  'single' and "double" quotes
 // END YAML OMIT
 `
 
 var tomlCode = `
 // START TOML OMIT
-key1 = "line1\nline2"
+key1 = "This is a very long string that has no newlines but it includes 'single' and \"double\" quotes"
 key2 = """
-line1
-line2"""
+This is a very long string that \
+has no newlines but it includes \
+'single' and "double" quotes"""
 // END TOML OMIT
 `
 
 var hclCode = `
 // START HCL OMIT
-key1 = "line1\nline2"
-# heredocs *almost* work
-key2 = <<EOF
-line1
-line2
-EOF
+key1 = "This is a very long string that has no newlines but it includes 'single' and \"double\" quotes"
 // END HCL OMIT
 `
 
