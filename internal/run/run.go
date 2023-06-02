@@ -85,6 +85,41 @@ func HCLExample(s string) Example {
 	}
 }
 
+func PrintNested(example Example) {
+	Print(example)
+
+	var dest map[string]string
+	err := Unmarshal(example, &dest)
+	if err != nil {
+		PrintErr(err)
+		return
+	}
+
+	fmt.Println("\n\n------ " + "Parsed Nested Values" + "------")
+	for _, k := range []string{"json", "yaml", "toml", "hcl"} {
+		v, ok := dest[k]
+		if !ok {
+			continue
+		}
+
+		var example Example
+		switch k {
+		case "json":
+			example = JSONExample(v)
+		case "yaml":
+			example = YAMLExample(v)
+		case "toml":
+			example = TOMLExample(v)
+		case "hcl":
+			example = HCLExample(v)
+		default:
+			fmt.Println("unknown type")
+			continue
+		}
+		Print(example)
+	}
+}
+
 func PrintAll(examples ...Example) {
 	for _, example := range examples {
 		Print(example)
@@ -110,37 +145,39 @@ func PrintErr(err error) {
 
 func PrintAs[T any](dest T, example Example) {
 	fmt.Println("====== " + strings.ToUpper(example.Type) + " ======")
+	err := Unmarshal(example, &dest)
+	if err != nil {
+		PrintErr(err)
+		return
+	}
+	DumpResult(example, dest)
+}
+
+func Unmarshal(example Example, dest any) error {
 	switch example.Type {
 	case "json":
-		err := json.Unmarshal(Sanitize(example.Data), &dest)
+		err := json.Unmarshal(Sanitize(example.Data), dest)
 		if err != nil {
-			PrintErr(err)
-		} else {
-			DumpResult(example, dest)
+			return err
 		}
 	case "yaml":
-		err := yaml.Unmarshal(Sanitize(example.Data), &dest)
+		err := yaml.Unmarshal(Sanitize(example.Data), dest)
 		if err != nil {
-			PrintErr(err)
-		} else {
-			DumpResult(example, dest)
+			return err
 		}
 	case "toml":
-		err := toml.Unmarshal(Sanitize(example.Data), &dest)
+		err := toml.Unmarshal(Sanitize(example.Data), dest)
 		if err != nil {
-			PrintErr(err)
-		} else {
-			DumpResult(example, dest)
+			return err
 		}
-
 	case "hcl":
-		err := hcl.Unmarshal(Sanitize(example.Data), &dest)
+		err := hcl.Unmarshal(Sanitize(example.Data), dest)
 		if err != nil {
-			PrintErr(err)
-		} else {
-			DumpResult(example, dest)
+			return err
 		}
 	default:
-		panic("unknown type " + example.Type + " " + example.Data)
+		return fmt.Errorf("unknown type %s %s", example.Type, example.Data)
 	}
+
+	return nil
 }

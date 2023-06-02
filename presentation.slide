@@ -7,21 +7,25 @@ DevX-O, Weave
 
 https://github.com/carsonoid/talk-ending-the-data-format-wars
 
-## Summary
+## Why Do We Care?
 
-Having data in memory is great! But we often need to serialize that data out into a format that can be stored or shared between systems. When that time comes we need to turn to a format like YAML, JSON, TOML, HCL, or any of the other common formats for sharing data.
+Having data in memory is great! But we often need to serialize that data out into a format that can be stored or shared between systems.
 
-But how well do you really know these formats? We all tend to have preferences but is there a clear winner? What do each of these formats look like? What can they describe? What can’t they describe? Why were they created? What are they good at? What are they bad at?
+When that time comes we need to turn to a format like YAML, JSON, TOML, HCL, or any of the other common formats for sharing data.
 
-This talk is here to help demystify these formats, build a common vocabulary for the data they contain and help explain what each is good at, bad at, and how to use any of them as a tool to make your life better. A deeper understanding of these tools can turn working with many modern systems from a slog to a joy.
+Additionally, you are very likely to use at one or all of these formats to configure software or define infrastructure.
 
-## Why do we care?
+## The Contenders
 
-## The contenders
+These slides will focus on the 3 of the most common data formats.
 
 * **JSON**
 * **YAML**
 * **TOML**
+
+I have also included HCL
+since it is a common format used by popular DevOps tools like Vault and Terraform.
+
 * **HCL**
 
 ## Disclaimer
@@ -30,23 +34,23 @@ No matter which format you use, actual functionality depends on the exact
 code you are using. Just because something is or is not in the spec
 of any format doesn't guarantee anything.
 
+> Just because the spec says something, doesn't mean your parser will do it, or even do it right
+> Test, test, test!
+
 All examples executed here are done using popular Go parsers:
 
-* encoding/json (built in!)
-* gopkg.in/yaml.v3
-* https://github.com/BurntSushi/toml
-* github.com/hashicorp/hcl
-
+* `encoding/json` (built in!)
+* `gopkg.in/yaml.v3`
+* `https://github.com/BurntSushi/toml`
+* `github.com/hashicorp/hcl`
 
 ## JSON: Primer
 
 > JavaScript Object Notation
 
-The lowest common denominator for markup languages.
-
 * Most rigid
 * Whitespace is never important
-* Commas are important
+* Commas and quotes are very important
 
 ---
 
@@ -107,7 +111,7 @@ HCL
 ## Basic Type Comparisons
 
 All the comparisons will use a key/value set as the root type. Depending on
-the format this is going to be called something differnet
+the format this is going to be called something different
 
 * map - YAML
 * object - JSON, HCL
@@ -219,6 +223,36 @@ HCL
 
 .play examples/maps-3.go /START RUN OMIT/,/END RUN OMIT/
 
+## objects/maps/tables - key uniqueness
+
+JSON and HCL allows duplicated keys with later keys overwriting existing keys.
+
+YAML and TOML explicitly disallow duplicates
+
+---
+
+JSON
+
+.code examples/maps-dup-keys.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/maps-dup-keys.go /START YAML OMIT/,/END YAML OMIT/
+
+> 💀 invalid!
+
+TOML
+
+.code examples/maps-dup-keys.go /START TOML OMIT/,/END TOML OMIT/
+
+> 💀 invalid!
+
+HCL
+
+.code examples/maps-dup-keys.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/maps-dup-keys.go /START RUN OMIT/,/END RUN OMIT/
+
 ## strings - JSON
 
 Strings must always be quoted with double quotes. Nested quotes must be escaped
@@ -268,11 +302,11 @@ HCL
 ## long strings
 
 
-> This is a very long string that has no newlines but it includes 'single' and "double" quotes
+.code examples/strings-long.go /START TARGET OMIT/,/END TARGET OMIT/
 
 ---
 
-.code examples/strings-long.go /START TARGET OMIT/,/END TARGET OMIT/
+> This is a very long string that has no newlines but it includes 'single' and "double" quotes
 
 ## long strings
 
@@ -375,8 +409,6 @@ JSON
 YAML
 
 .code examples/lists.go /START YAML OMIT/,/END YAML OMIT/
-
-> a bare 'false would 
 
 TOML
 
@@ -891,6 +923,77 @@ Make your own separator and jam it in:
 
 .code examples/unique/document-separators5.go /START BASH OMIT/,/END BASH OMIT/
 
+## Nesting
+
+Occansionaly you might want to use long strings to nest data structures inside others.
+This kind of string based nesting is a common escape hatch for strict data structures.
+
+---
+
+Task: make a map with
+
+* "type" is a string containing the type of data.
+* "data" is a nested map containing
+  * "str" with a string value of `"Hello world"` (literal quotes are in the string)
+  * "bool" containing a bool value of `true`
+
+JSON
+
+.code examples/nesting/example.json
+
+## Nesting - JSON
+
+JSON
+
+.code examples/nesting/json.go /START JSON OMIT/,/END JSON OMIT/
+
+.play examples/nesting/json.go  /START RUN OMIT/,/END RUN OMIT
+
+## Nesting - YAML
+
+JSON
+
+.code examples/nesting/yaml.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/nesting/yaml.go  /START RUN OMIT/,/END RUN OMIT
+
+## Nesting - TOML
+
+TOML
+
+.code examples/nesting/toml.go /START TOML OMIT/,/END TOML OMIT/
+
+.play examples/nesting/toml.go  /START RUN OMIT/,/END RUN OMIT
+
+## Nesting - HCL - Exact
+
+The only way to get the *exact* same map of strings in HCL is
+to use double quotes and escapes.
+
+HCL
+
+.code examples/nesting/hcl.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/nesting/hcl.go  /START RUN OMIT/,/END RUN OMIT
+
+## Nesting - HCL - Added Trailing Newlines
+
+HCL
+
+.code examples/nesting/hcl2.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/nesting/hcl2.go  /START RUN OMIT/,/END RUN OMIT
+
+## Bonus - jq & jq
+
+While not a feature of the formats themselves. `jq`, and to a lesser extent `yq`,
+are both massively useful tools that you should be using.
+
+.link https://jqlang.github.io/jq/
+
+.link https://github.com/mikefarah/yq
+
+If you are handling json or yaml files on the command line, you *need* these tools
 
 ## Questions?
 

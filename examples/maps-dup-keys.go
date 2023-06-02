@@ -1,40 +1,52 @@
 package main
 
 import (
+	"bytes"
+
 	"github.com/carsonoid/talk-ending-the-data-format-wars/internal/run"
 )
 
-// //go:embed example.json
-// var jsonBytes []byte
-
 var jsonCode = `
 // START JSON OMIT
-{"key":null}
+{
+  "key": "value1",
+  "key": "value2"
+}
 // END JSON OMIT
 `
 
 var yamlCode = `
 // START YAML OMIT
-key1: null
-key2: Null
-key3: NULL
-key4: ~
-key5:
+key: value1
+key: value2
 // END YAML OMIT
 `
 
 var tomlCode = `
 // START TOML OMIT
-key = null
+key = "value1"
+key = "value2"
 // END TOML OMIT
 `
 
 var hclCode = `
 // START HCL OMIT
-key = null
+key = "value1"
+key = "value2"
 // END HCL OMIT
 `
 
+// sanitize removes all lines that end in OMIT
+func sanitize(b []byte) []byte {
+	var out []byte
+	for _, line := range bytes.Split(b, []byte("\n")) {
+		if !bytes.HasSuffix(line, []byte("OMIT")) {
+			out = append(out, line...)
+			out = append(out, []byte("\n")...)
+		}
+	}
+	return out
+}
 func main() {
 	run.PrintAll(
 		run.JSONExample(jsonCode),
