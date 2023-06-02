@@ -599,6 +599,9 @@ TOML
 
 .code examples/array-objects2.go /START TOML OMIT/,/END TOML OMIT/
 
+> Repeat the map key name in double braces to start a new item.
+> https://toml.io/en/v1.0.0#array-of-tables
+
 HCL
 
 .code examples/array-objects2.go /START HCL OMIT/,/END HCL OMIT/
@@ -785,19 +788,111 @@ HCL
 
 .play examples/unique/serialize-any-not-supported.go /START RUN OMIT/,/END RUN OMIT/
 
-## Anchors - YAML
+## Anchors - YAML Magic - Simple
 
-Not supported! Root type must be key/value pair
+Any node can be given an id with `&` and referenced with `*`
 
-TOML
+YAML
 
-.code examples/unique/serialize-any-not-supported.go /START TOML OMIT/,/END TOML OMIT/
+.code examples/unique/anchors1.go /START YAML OMIT/,/END YAML OMIT/
 
-HCL
+.play examples/unique/anchors1.go  /START RUN OMIT/,/END RUN OMIT/
 
-.code examples/unique/serialize-any-not-supported.go /START HCL OMIT/,/END HCL OMIT/
+## Anchors - YAML Magic - Complex
 
-.play examples/unique/serialize-any-not-supported.go /START RUN OMIT/,/END RUN OMIT/
+YAML
+
+.code examples/unique/anchors2.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/anchors2.go  /START RUN OMIT/,/END RUN OMIT/
+
+
+## Anchors - YAML Magic - Practical
+
+A notable real-world user of this is `docker-compose`
+
+.link https://docs.docker.com/compose/compose-file/10-fragments/#example-4
+
+YAML
+
+.code examples/unique/anchors3.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/anchors3.go  /START RUN OMIT/,/END RUN OMIT/
+
+## Document Separators - YAML Streaming
+
+Yaml can use `---` to separate documents in a stream
+
+YAML
+
+.code examples/unique/document-separators.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/document-separators.go  /START RUN OMIT/,/END RUN OMIT/
+
+
+## Document Separators - YAML Streaming
+
+Yaml can use `...` to end a stream. This removes abiguity around missing data.
+
+YAML
+
+.code examples/unique/document-separators2.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/document-separators2.go  /START RUN OMIT/,/END RUN OMIT/
+
+## Document Separators - YAML Streaming
+
+Multiple streams are possible in one data source:
+
+YAML
+
+.code examples/unique/document-separators3.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/document-separators3.go  /START RUN OMIT/,/END RUN OMIT/
+
+## Document Separators - Practical
+
+Starting files with `---` makes it possible to easily use concatination for composition
+of resurces. This is why I almost always do it in every yaml I write
+
+YAML
+
+.code examples/unique/document-separators4.go /START USER1 OMIT/,/END USER1 OMIT/
+
+YAML
+
+.code examples/unique/document-separators4.go /START USER2 OMIT/,/END USER2 OMIT/
+
+YAML
+
+.code examples/unique/document-separators4.go /START USER3 OMIT/,/END USER3 OMIT/
+
+Easy composition by just concating files.
+
+.code examples/unique/document-separators4.go /START BASH OMIT/,/END BASH OMIT/
+
+## Document Separators - Practical Alternative
+
+You could also get tricky for cases where the files don't have separators:
+
+YAML
+
+.code examples/unique/document-separators5.go /START USER1 OMIT/,/END USER1 OMIT/
+
+YAML
+
+.code examples/unique/document-separators5.go /START USER2 OMIT/,/END USER2 OMIT/
+
+YAML
+
+.code examples/unique/document-separators5.go /START USER3 OMIT/,/END USER3 OMIT/
+
+Make your own separator and jam it in:
+
+.code examples/unique/document-separators5.go /START BASH OMIT/,/END BASH OMIT/
+
+
+## Questions?
 
 ## Playgrounds
 
@@ -819,24 +914,3 @@ The next 4 slides have editing enabled to facilitate answering questions
 
 .play -edit examples/primer-hcl.go /START HCL OMIT/,/END HCL OMIT/
 
-## Compactness
-## Can be single-line
-
-
-## YAML Unique Features
-
-## Anchors
-## Document separator
-## Frontmatter?
-## Nested yaml strings
-
-
-## JSON Unique Features
-## Compactness
-## Can be single-line
-
-## TOML Unique Features
-## Deep modifications without nesting
-## ?
-
-## HCL Unique Features

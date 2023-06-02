@@ -29,8 +29,8 @@ func init() {
 	}
 }
 
-// sanitize removes all lines that end in OMIT
-func sanitize(s string) []byte {
+// Sanitize removes all lines that end in OMIT
+func Sanitize(s string) []byte {
 	b := []byte(s)
 	var out []byte
 	for _, line := range bytes.Split(b, []byte("\n")) {
@@ -42,7 +42,7 @@ func sanitize(s string) []byte {
 	return out
 }
 
-func dumpResult(example Example, obj any) {
+func DumpResult(example Example, obj any) {
 	out := litter.Sdump(obj)
 	out = strings.ReplaceAll(out, "interface {}", "any")
 	fmt.Println(out)
@@ -112,33 +112,33 @@ func PrintAs[T any](dest T, example Example) {
 	fmt.Println("====== " + strings.ToUpper(example.Type) + " ======")
 	switch example.Type {
 	case "json":
-		err := json.Unmarshal(sanitize(example.Data), &dest)
+		err := json.Unmarshal(Sanitize(example.Data), &dest)
 		if err != nil {
 			PrintErr(err)
 		} else {
-			dumpResult(example, dest)
+			DumpResult(example, dest)
 		}
 	case "yaml":
-		err := yaml.Unmarshal(sanitize(example.Data), &dest)
+		err := yaml.Unmarshal(Sanitize(example.Data), &dest)
 		if err != nil {
 			PrintErr(err)
 		} else {
-			dumpResult(example, dest)
+			DumpResult(example, dest)
 		}
 	case "toml":
-		err := toml.Unmarshal(sanitize(example.Data), &dest)
+		err := toml.Unmarshal(Sanitize(example.Data), &dest)
 		if err != nil {
 			PrintErr(err)
 		} else {
-			dumpResult(example, dest)
+			DumpResult(example, dest)
 		}
 
 	case "hcl":
-		err := hcl.Unmarshal(sanitize(example.Data), &dest)
+		err := hcl.Unmarshal(Sanitize(example.Data), &dest)
 		if err != nil {
 			PrintErr(err)
 		} else {
-			dumpResult(example, dest)
+			DumpResult(example, dest)
 		}
 	default:
 		panic("unknown type " + example.Type + " " + example.Data)
