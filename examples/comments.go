@@ -12,12 +12,11 @@ var jsonCode = `
 
 var yamlCode = `
 // START YAML OMIT
-# key is the key
-str1: value
-str2: "value" # comments can come after
-str3: value # comments can come after
-str4: "use quotes to keep # comments that come after"
-str5: >-
+# comment on a line
+str1: "value" # comments can come after
+str2: value # comments can come after
+str3: "use quotes to keep # comments that come after"
+str4: >-
   use a block scalar to keep # comments that come after
 
 bool: true # comments can come after

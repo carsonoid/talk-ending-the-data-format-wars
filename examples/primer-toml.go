@@ -7,10 +7,8 @@ import (
 var tomlCode = `
 // START TOML OMIT
 str = "my string"
-bool = "my bool"
 map.true = true
-map.false = true
-map.num = false
+map.false = false
 array = [1, 2, 3]
 // END TOML OMIT
 `

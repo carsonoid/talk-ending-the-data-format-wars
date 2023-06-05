@@ -31,7 +31,7 @@ var yamlCode2 = `
 
 func main() {
 	run.PrintAs(types.RunInstancesInput{}, run.JSONExample(jsonCode))
-	run.PrintAs(types.RunInstancesInput{}, run.YAMLExample(hclCode))
+	run.PrintAs(types.RunInstancesInput{}, run.YAMLExample(yamlCode))
 	run.PrintAs(types.RunInstancesInput{}, run.YAMLExample(yamlCode2))
 }
 

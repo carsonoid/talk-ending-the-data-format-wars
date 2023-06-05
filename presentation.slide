@@ -925,7 +925,7 @@ Make your own separator and jam it in:
 
 ## Nesting
 
-Occansionaly you might want to use long strings to nest data structures inside others.
+Occasionally you might want to use long strings to nest data structures inside others.
 This kind of string based nesting is a common escape hatch for strict data structures.
 
 ---
@@ -940,6 +940,10 @@ Task: make a map with
 JSON
 
 .code examples/nesting/example.json
+
+## SHOW IN ALL
+
+fds
 
 ## Nesting - JSON
 

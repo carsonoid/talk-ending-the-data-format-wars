@@ -22,7 +22,7 @@ bool4: >-
 unicode: "\u03B1\u03B2\u03B3"
 
 complex1: '''single'' "double" quotes' # Note the '', not \'
-complex2: "'single' \"double\" quotes"
+complex2: "'single' \"double\" quotes" # supports \ sequences
 complex3: >-
   'single' "double" quotes
 // END YAML OMIT

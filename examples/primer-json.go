@@ -11,7 +11,6 @@ var jsonCode = `
 // START JSON OMIT
 {
     "str": "my string",
-    "bool": "my bool",
     "map": {
         "true": true,
         "num": false

@@ -15,8 +15,7 @@ accounts:
   - &account1
     user: *carson
     balance: 100
-  - &account2
-    user: *carson
+  - user: *carson
     balance: 200
 defaultAccount: *account1
 // END YAML OMIT

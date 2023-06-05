@@ -23,7 +23,7 @@ var yamlCode = `
 key1: This is a very long string that has no newlines but it includes 'single' and "double" quotes
 key2: "This is a very long string that has no newlines but it includes 'single' and \"double\" quotes"
 key3: >-
-  this is a very long string that
+  This is a very long string that
   has no newlines but it includes
   'single' and "double" quotes
 // END YAML OMIT

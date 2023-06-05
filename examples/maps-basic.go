@@ -22,14 +22,14 @@ key2: value2
 var tomlCode = `
 // START TOML OMIT
 key1 = "value1"
-key2 = "value2"
+key2="value2"
 // END TOML OMIT
 `
 
 var hclCode = `
 // START HCL OMIT
 key1 = "value1"
-key2 = "value2"
+key2="value2"
 // END HCL OMIT
 `
 

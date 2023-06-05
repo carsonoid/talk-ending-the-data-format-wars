@@ -7,10 +7,9 @@ import (
 var hclCode = `
 // START HCL OMIT
 str = "my string"
-bool = "my bool"
 map = {
 	"true" = true
-	num = false
+	"false" = false
 }
 array = [1, 2, 3]
 // END HCL OMIT

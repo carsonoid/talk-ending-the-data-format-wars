@@ -15,12 +15,12 @@ var jsonCode = `
 
 var yamlCode = `
 // START YAML OMIT
-canonical: 2001-12-15T02:59:43.1Z
-iso8601: 2001-12-14t21:59:43.10-05:00
-date: 2002-12-14
+canonical: 1979-05-27T07:32:00Z
+iso8601: 1979-05-27T07:32:00-05:00
+date: !!timestamp 1979-05-27
 
 # in the spec but not commonly supported
-spaced: 2001-12-14 21:59:43.10 -5
+spaced: 1979-05-27 T07:32:00 -5
 // END YAML OMIT
 `
 

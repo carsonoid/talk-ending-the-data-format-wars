@@ -7,16 +7,14 @@ import (
 var yamlCode = `
 // START YAML OMIT
 str: my string
-bool: my bool
 map:
   "true": true
   !!str false: false
-  num: false
 array:
   - 1
   - 2
   - 3
-jsonExample: {"str":"my string","bool":"my bool","map":{"true":true,"num":false},"array":[1,2,3]}
+jsonExample: {"str":"my string","map":{"true":true,"num":false},"array":[1,2,3]}
 // END YAML OMIT
 `
 

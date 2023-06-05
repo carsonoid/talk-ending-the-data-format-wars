@@ -21,7 +21,7 @@ verified = false
 var hclCode = `
 // START HCL OMIT
 people = [
-	{ name = "Alice", age = 30 },
+	{ name = "Alice", age = 30, verified = true },
 	{
 		name = "Bob",
 		age = 31,
