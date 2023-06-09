@@ -941,9 +941,25 @@ JSON
 
 .code examples/nesting/example.json
 
-## SHOW IN ALL
+## Nesting - Examples
 
-fds
+JSON
+
+.code examples/nesting/example.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/nesting/example.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/nesting/example.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/nesting/example.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/nesting/example.go /START RUN OMIT/,/END RUN OMIT/
 
 ## Nesting - JSON
 
@@ -988,7 +1004,7 @@ HCL
 
 .play examples/nesting/hcl2.go  /START RUN OMIT/,/END RUN OMIT
 
-## Bonus - jq & jq
+## Bonus - jq & jy
 
 While not a feature of the formats themselves. `jq`, and to a lesser extent `yq`,
 are both massively useful tools that you should be using.
@@ -998,6 +1014,30 @@ are both massively useful tools that you should be using.
 .link https://github.com/mikefarah/yq
 
 If you are handling json or yaml files on the command line, you *need* these tools
+
+## Wrapping Up - JSON
+
+* One way to JSON, get used to it or get out
+* Can be readable enough with only short and simple strings
+
+## Wrapping Up - YAML
+
+* Very flexible
+* Maybe too flexible
+* When in doubt, disambiguate/quote
+* Can always just put JSON in any field
+* Anchors are amazing
+* Native concept of streaming
+
+## Wrapping Up - TOML
+
+* Great for simple use cases
+* Dot notation is super useful
+* Lists of objects can be a bit weird
+
+## Wrapping Up - HCL
+
+* Pretty good mix of all others
 
 ## Questions?
 
