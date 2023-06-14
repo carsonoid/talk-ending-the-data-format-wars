@@ -11,14 +11,18 @@ import (
 var yamlCode = `
 // START YAML OMIT
 ---
-{ name: Carson, id: 35 }
+name: Carson
+id: 35
 ---
-{ name: Tami, id: 14 }
+name: Tami
+id: 14
 ...
 ---
-{ name: Raul, id: 15 }
+name: Raul
+id: 15
 ---
-{ name: Ella, id: 23 }
+name: Ella
+id: 23
 ...
 // END YAML OMIT
 `

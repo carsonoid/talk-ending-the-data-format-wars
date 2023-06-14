@@ -11,9 +11,11 @@ import (
 var yamlCode = `
 // START YAML OMIT
 ---
-{ name: Carson, id: 35 }
+name: Carson
+id: 35
 ---
-{ name: Tami, id: 14 }
+name: Tami
+id: 14
 
 # Note the ... to say
 # "end of stream" rather than "start of document"

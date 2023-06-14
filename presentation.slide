@@ -862,9 +862,10 @@ YAML
 .play examples/unique/document-separators.go  /START RUN OMIT/,/END RUN OMIT/
 
 
-## Document Separators - YAML Streaming
+## Stream Separators - YAML Streaming
 
-Yaml can use `...` to end a stream. This removes abiguity around missing data.
+Yaml can use `...` to end a stream. This removes abiguity around missing data or
+connection closures
 
 YAML
 
@@ -874,7 +875,8 @@ YAML
 
 ## Document Separators - YAML Streaming
 
-Multiple streams are possible in one data source:
+Multiple streams are possible in one data source. This is useful for things
+like bursts of messages over a long-lived connection
 
 YAML
 
@@ -902,26 +904,6 @@ YAML
 Easy composition by just concating files.
 
 .code examples/unique/document-separators4.go /START BASH OMIT/,/END BASH OMIT/
-
-## Document Separators - Practical Alternative
-
-You could also get tricky for cases where the files don't have separators:
-
-YAML
-
-.code examples/unique/document-separators5.go /START USER1 OMIT/,/END USER1 OMIT/
-
-YAML
-
-.code examples/unique/document-separators5.go /START USER2 OMIT/,/END USER2 OMIT/
-
-YAML
-
-.code examples/unique/document-separators5.go /START USER3 OMIT/,/END USER3 OMIT/
-
-Make your own separator and jam it in:
-
-.code examples/unique/document-separators5.go /START BASH OMIT/,/END BASH OMIT/
 
 ## Nesting
 
