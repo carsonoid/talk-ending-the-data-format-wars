@@ -1,0 +1,1024 @@
+# Ending The Data Format Wars
+Truce time
+
+Carson Anderson
+DevX-O, Weave
+@carson_ops
+
+https://github.com/carsonoid/talk-ending-the-data-format-wars
+
+## Why Do We Care?
+
+Having data in memory is great! But we often need to serialize that data out into a format that can be stored or shared between systems.
+
+When that time comes we need to turn to a format like YAML, JSON, TOML, HCL, or any of the other common formats for sharing data.
+
+Additionally, you are very likely to use at one or all of these formats to configure software or define infrastructure.
+
+## The Contenders
+
+These slides will focus on the 3 of the most common data formats.
+
+* **JSON**
+* **YAML**
+* **TOML**
+
+I have also included HCL
+since it is a common format used by popular DevOps tools like Vault and Terraform.
+
+* **HCL**
+
+## Disclaimer
+
+No matter which format you use, actual functionality depends on the exact
+code you are using. Just because something is or is not in the spec
+of any format doesn't guarantee anything.
+
+> Just because the spec says something, doesn't mean your parser will do it, or even do it right
+> Test, test, test!
+
+All examples executed here are done using popular Go parsers:
+
+* `encoding/json` (built in!)
+* `gopkg.in/yaml.v3`
+* `https://github.com/BurntSushi/toml`
+* `github.com/hashicorp/hcl`
+
+## JSON: Primer
+
+> JavaScript Object Notation
+
+* Most rigid
+* Whitespace is never important
+* Commas and quotes are very important
+
+---
+
+JSON
+
+.code examples/primer-json.go /START JSON OMIT/,/END JSON OMIT/
+
+.play examples/primer-json.go /START RUN OMIT/,/END RUN OMIT/
+
+## YAML: Primer
+
+> Yaml Ain't Markup Language
+
+* Superset of JSON
+* Arguably Most flexible
+
+---
+
+YAML
+
+.code examples/primer-yaml.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/primer-yaml.go /START RUN OMIT/,/END RUN OMIT/
+
+## TOML: Primer
+
+> Tom's Obvious Markup Language
+
+* Simplest for basic use cases
+* Less ambiguity than YAML
+* Allows avoiding of nesting
+
+---
+
+TOML
+
+.code examples/primer-toml.go /START TOML OMIT/,/END TOML OMIT/
+
+.play examples/primer-toml.go /START RUN OMIT/,/END RUN OMIT/
+
+## HCL: Primer
+
+> Hashicorp Configuration Language
+
+* Mostly confined to Hashicorp tools
+* Designed as a "syntax" more than a data format
+* A decent mix of JSON/YAML/TOML
+
+---
+
+HCL
+
+.code examples/primer-hcl.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/primer-hcl.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## Basic Type Comparisons
+
+All the comparisons will use a key/value set as the root type. Depending on
+the format this is going to be called something different
+
+* map - YAML
+* object - JSON, HCL
+* table - TOML
+
+> We will use this as the root type for all examples. This is because HCL
+> and TOML are both "document" markup languages and require a key value pair as
+> the root data structure
+
+## objects/maps/tables - basic
+
+JSON
+
+.code examples/maps-basic.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/maps-basic.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/maps-basic.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/maps-basic.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/maps-basic.go /START RUN OMIT/,/END RUN OMIT/
+
+## objects/maps/tables - advanced
+
+JSON
+
+.code examples/maps.go /START JSON OMIT/,/END JSON OMIT/
+
+> Trailing comma disallowed by strict parsers
+
+YAML
+
+.code examples/maps.go /START YAML OMIT/,/END YAML OMIT/
+
+> Can use a data type prefix to disambiguate
+
+TOML
+
+.code examples/maps.go /START TOML OMIT/,/END TOML OMIT/
+
+> Quotes only required for keys with spaces, otherwise all keys
+> are always read as strings
+
+HCL
+
+.code examples/maps.go /START HCL OMIT/,/END HCL OMIT/
+
+> Keys must be strings and must be quoted if they contain no letters
+
+.play examples/maps.go /START RUN OMIT/,/END RUN OMIT/
+
+## objects/maps/tables - nested
+
+JSON
+
+.code examples/maps-2.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/maps-2.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/maps-2.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/maps-2.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/maps-2.go /START RUN OMIT/,/END RUN OMIT/
+
+## objects/maps/tables - keys
+
+Almost all formats require string keys for maps
+
+---
+
+JSON
+
+.code examples/maps-3.go /START JSON OMIT/,/END JSON OMIT/
+
+> 💀 invalid!
+
+YAML
+
+.code examples/maps-3.go /START YAML OMIT/,/END YAML OMIT/
+
+> This is the only format capable of representing maps with key
+> values of a type other than strings
+
+TOML
+
+.code examples/maps-3.go /START TOML OMIT/,/END TOML OMIT/
+
+> Will not fail, but the key will be forced to be a string
+
+HCL
+
+.code examples/maps-3.go /START HCL OMIT/,/END HCL OMIT/
+
+> 💀 invalid!
+
+.play examples/maps-3.go /START RUN OMIT/,/END RUN OMIT/
+
+## objects/maps/tables - key uniqueness
+
+JSON and HCL allows duplicated keys with later keys overwriting existing keys.
+
+YAML and TOML explicitly disallow duplicates
+
+---
+
+JSON
+
+.code examples/maps-dup-keys.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/maps-dup-keys.go /START YAML OMIT/,/END YAML OMIT/
+
+> 💀 invalid!
+
+TOML
+
+.code examples/maps-dup-keys.go /START TOML OMIT/,/END TOML OMIT/
+
+> 💀 invalid!
+
+HCL
+
+.code examples/maps-dup-keys.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/maps-dup-keys.go /START RUN OMIT/,/END RUN OMIT/
+
+## strings - JSON
+
+Strings must always be quoted with double quotes. Nested quotes must be escaped
+
+---
+
+JSON
+
+.code examples/strings-json.go /START JSON OMIT/,/END JSON OMIT/
+
+.play examples/strings-json.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## strings - YAML
+
+Strings may be declared in many formats: unquoted, double quoted, single quoted, declared with a type prefix, or as a "block scalar"
+
+---
+
+YAML
+
+.code examples/strings-yaml.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/strings-yaml.go /START RUN OMIT/,/END RUN OMIT/
+
+## strings - TOML
+
+Strings may be declared in a few formats: double quoted, or with triple versions of both kinds
+
+---
+
+TOML
+
+.code examples/strings-toml.go /START TOML OMIT/,/END TOML OMIT/
+
+.play examples/strings-toml.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## strings - HCL
+
+HCL
+
+.code examples/strings-hcl.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/strings-hcl.go /START RUN OMIT/,/END RUN OMIT/
+
+## long strings
+
+
+.code examples/strings-long.go /START TARGET OMIT/,/END TARGET OMIT/
+
+---
+
+> This is a very long string that has no newlines but it includes 'single' and "double" quotes
+
+## long strings
+
+JSON
+
+.code examples/strings-long.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/strings-long.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/strings-long.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/strings-long.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/strings-long.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## multiline strings
+
+We will start with rendering a basic example:
+
+.code examples/multiline-strings.go /START TARGET OMIT/,/END TARGET OMIT/
+
+## multiline strings
+
+JSON
+
+.code examples/multiline-strings.go /START JSON OMIT/,/END JSON OMIT/
+
+> Must use escapes
+
+YAML
+
+.code examples/multiline-strings.go /START YAML OMIT/,/END YAML OMIT/
+
+> See also: https://yaml-multiline.info/
+
+TOML
+
+.code examples/multiline-strings.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/multiline-strings.go /START HCL OMIT/,/END HCL OMIT/
+
+>  ⚠️ Not exactly the same! Leaves a trailing newline and needs a *Terraform* `trim` function which is not pure HCL
+
+.play examples/multiline-strings.go /START RUN OMIT/,/END RUN OMIT/
+
+## multiline strings - complex
+
+Now a more complex example
+
+.code examples/multiline-strings-complex.go /START TARGET OMIT/,/END TARGET OMIT/
+
+## multiline strings - complex
+
+JSON
+
+.code examples/multiline-strings-complex.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/multiline-strings-complex.go /START YAML OMIT/,/END YAML OMIT/
+
+> key2 == 😱
+
+TOML
+
+.code examples/multiline-strings-complex.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/multiline-strings-complex.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/multiline-strings-complex.go /START RUN OMIT/,/END RUN OMIT/
+
+## lists
+
+In all formats lists are *ordered* and can contain zero to N of any type.
+
+---
+Task - make a list of string `"value"` and bool `false`
+
+* value
+* `false`
+
+
+## lists
+
+JSON
+
+.code examples/lists.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/lists.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/lists.go /START TOML OMIT/,/END TOML OMIT/
+
+> Trailing comma allowed, whitespace discouraged when inline
+
+HCL
+
+.code examples/lists.go /START HCL OMIT/,/END HCL OMIT/
+
+> Trailing comma allowed, no whitespace required
+
+.play examples/lists.go /START RUN OMIT/,/END RUN OMIT/
+
+## bools
+
+Task - make a map:
+
+* string key `"true"` to bool value `true`
+* string key `"false"` to bool value `false`
+
+## bools
+
+
+JSON
+
+.code examples/bools.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/bools.go /START YAML OMIT/,/END YAML OMIT/
+
+> y|Y|yes|Yes|YES
+> |n|N|no|No|NO
+> |true|True|TRUE
+> |false|False|FALSE
+> |on|On|ON|off|Off|OFF
+
+TOML
+
+.code examples/bools.go /START TOML OMIT/,/END TOML OMIT/
+
+> Keys are always interpreted as strings, so no need to quote
+
+HCL
+
+.code examples/bools.go /START HCL OMIT/,/END HCL OMIT/
+
+> Quotes required
+
+.play examples/bools.go /START RUN OMIT/,/END RUN OMIT/
+
+## null
+
+Sometimes we want to include keys in objects but exlicitly set them to *nothing*
+
+---
+
+Task - make a map of string "key" to `null`
+
+## null
+
+JSON
+
+.code examples/null.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/null.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/null.go /START TOML OMIT/,/END TOML OMIT/
+
+> 💀 explicitly not supported
+
+HCL
+
+.code examples/null.go /START HCL OMIT/,/END HCL OMIT/
+
+> ⚠️ null is in the spec but is not well supported
+
+.play examples/null.go /START RUN OMIT/,/END RUN OMIT/
+
+## comments
+
+JSON
+
+.code examples/comments.go /START JSON OMIT/,/END JSON OMIT/
+
+> Not supported
+
+YAML
+
+.code examples/comments.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/comments.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/comments.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/comments.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## numbers
+
+JSON
+
+.code examples/numbers.go /START JSON OMIT/,/END JSON OMIT/
+
+> No distinction is made between ints or floats
+
+YAML
+
+.code examples/numbers.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/numbers.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/numbers.go /START HCL OMIT/,/END HCL OMIT/
+
+> Does not support `_` in numbers
+
+.play examples/numbers.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## datetimes
+
+JSON
+
+.code examples/datetimes.go /START JSON OMIT/,/END JSON OMIT/
+
+> No native support
+
+YAML
+
+.code examples/datetimes.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/datetimes.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/datetimes.go /START HCL OMIT/,/END HCL OMIT/
+
+> No native support
+
+.play examples/datetimes.go /START RUN OMIT/,/END RUN OMIT/
+
+## Complex Structure Comparisons
+
+So far we have simply compared basic types, but most use cases
+involve much more complex data types.
+
+## Objects with Arrays
+
+Create a document in each format that contains the following:
+
+* A list of bools
+* A list of numbers
+* A list of floats
+* A list of names
+
+## Objects with Arrays - JSON / YAML
+
+JSON
+
+.code examples/object-with-arrays1.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/object-with-arrays1.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/object-with-arrays1.go /START RUN OMIT/,/END RUN OMIT/
+
+## Objects with Arrays - TOML / HCL
+
+TOML
+
+.code examples/object-with-arrays2.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/object-with-arrays2.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/object-with-arrays2.go /START RUN OMIT/,/END RUN OMIT/
+
+## Array Of Objects/Maps - JSON / YAML
+
+Create a document in each format that contains the following:
+
+* An ordered list of people, with each having
+  * name - `string`
+  * age - `number`
+  * verified - `bool`
+
+## Array Of Objects/Maps - JSON / YAML
+
+JSON
+
+.code examples/array-objects1.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/array-objects1.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/array-objects1.go /START RUN OMIT/,/END RUN OMIT/
+
+## Array Of Objects - TOML / HCL
+
+TOML
+
+.code examples/array-objects2.go /START TOML OMIT/,/END TOML OMIT/
+
+> Repeat the map key name in double braces to start a new item.
+> https://toml.io/en/v1.0.0#array-of-tables
+
+HCL
+
+.code examples/array-objects2.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/array-objects2.go /START RUN OMIT/,/END RUN OMIT/
+
+## Real World Example - AWS RunInstancesRequest
+
+Let's create a portion of the AWS `RunInstances` request body in all formats
+
+.code examples/aws-create-instance/body.json
+
+## RunInstancesRequest - Go Types
+
+For a more real-world use case, we are going to use our own
+custom go types for the example
+
+.code internal/types/runInstances.go /START OMIT/,/END OMIT/
+
+## RunInstancesRequest - JSON
+
+JSON
+
+.code examples/aws-create-instance/json.go /START JSON OMIT/,/END JSON OMIT/
+
+.play examples/aws-create-instance/json.go /START RUN OMIT/,/END RUN OMIT/
+
+## RunInstancesRequest - YAML (from JSON)
+
+Remember, you can always just use JSON in YAML
+
+YAML
+
+.code examples/aws-create-instance/yaml.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/aws-create-instance/yaml.go /START RUN OMIT/,/END RUN OMIT/
+
+## RunInstancesRequest - YAML
+
+YAML
+
+.code examples/aws-create-instance/yaml-real.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/aws-create-instance/yaml-real.go /START RUN OMIT/,/END RUN OMIT/
+
+## RunInstancesRequest - TOML (inline)
+
+TOML
+
+.code examples/aws-create-instance/toml-fixed.go /START TOML OMIT/,/END TOML OMIT/
+
+This works, but over-use of inline tables is can lead to ugly files
+
+.play examples/aws-create-instance/toml-fixed.go /START RUN OMIT/,/END RUN OMIT/
+
+## RunInstancesRequest - TOML (Invalid)
+
+TOML
+
+.code examples/aws-create-instance/toml.go /START TOML OMIT/,/END TOML OMIT/
+
+This is **invalid** toml, but you might be tempted to think it would work. However,
+if you like this format, don't worry we will come back to it
+
+.play examples/aws-create-instance/toml.go /START RUN OMIT/,/END RUN OMIT/
+
+## RunInstancesRequest - TOML (Canonical)
+
+TOML
+
+.code examples/aws-create-instance/toml-valid.go /START TOML OMIT/,/END TOML OMIT/
+
+This is embracing TOML rather than working against it
+
+.play examples/aws-create-instance/toml-valid.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## RunInstancesRequest - HCL
+
+HCL
+
+.code examples/aws-create-instance/hcl.go /START HCL OMIT/,/END HCL OMIT/
+
+Interestingly, the invalid TOML example is actually valid and canonical HCL.
+
+.play examples/aws-create-instance/hcl.go /START RUN OMIT/,/END RUN OMIT/
+
+## Special Features
+
+Now, lets cover some features not supported across every format
+
+## One line documents - JSON & YAML
+
+This can be incredibly useful for things like logs. It makes it possible to
+emit structured logs but still read them line by line.
+
+---
+
+JSON excels at this use case
+
+JSON
+
+.code examples/unique/oneline.go /START JSON OMIT/,/END JSON OMIT/
+
+Yaml also it this (if you just give it JSON, but you really shouldn't do in the second format
+since it is error prone for large or complex data
+
+YAML
+
+.code examples/unique/oneline.go /START YAML OMIT/,/END YAML OMIT/
+
+YAML
+
+.code examples/unique/oneline.go /START YAML2 OMIT/,/END YAML2 OMIT/
+
+.play examples/unique/oneline.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## One line(ish) documents - TOML & HCL
+
+TOML and HCL can **almost** do our single line example. However both formats *must* have a key/value pair (map/table/etc) as the root data type of the document.
+
+However, if we use a wrapper type we can get to a single line
+
+.code examples/unique/oneline-ish.go /START WRAPPER OMIT/,/END WRAPPER OMIT/
+
+TOML
+
+.code examples/unique/oneline-ish.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/unique/oneline-ish.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/unique/oneline-ish.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## Serializing any type - JSON & YAML
+
+Both formats support serializing any data type directly, not just key value pairs
+
+JSON
+
+.code examples/unique/serialize-any.go /START JSON OMIT/,/END JSON OMIT/
+
+JSON
+
+.code examples/unique/serialize-any.go /START JSON2 OMIT/,/END JSON2 OMIT/
+
+JSON
+
+.code examples/unique/serialize-any.go /START JSON3 OMIT/,/END JSON3 OMIT/
+
+YAML
+
+.code examples/unique/serialize-any.go /START YAML OMIT/,/END YAML OMIT/
+
+YAML
+
+.code examples/unique/serialize-any.go /START YAML2 OMIT/,/END YAML2 OMIT/
+
+YAML
+
+.code examples/unique/serialize-any.go /START YAML3 OMIT/,/END YAML3 OMIT/
+
+YAML
+
+.code examples/unique/serialize-any.go /START YAML4 OMIT/,/END YAML4 OMIT/
+
+.play examples/unique/serialize-any.go /START RUN OMIT/,/END RUN OMIT/
+
+
+## Serializing any type - TOML & HCL
+
+Not supported! Root type must be key/value pair
+
+TOML
+
+.code examples/unique/serialize-any-not-supported.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/unique/serialize-any-not-supported.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/unique/serialize-any-not-supported.go /START RUN OMIT/,/END RUN OMIT/
+
+## Anchors - YAML Magic - Simple
+
+Any node can be given an id with `&` and referenced with `*`
+
+YAML
+
+.code examples/unique/anchors1.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/anchors1.go  /START RUN OMIT/,/END RUN OMIT/
+
+## Anchors - YAML Magic - Complex
+
+YAML
+
+.code examples/unique/anchors2.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/anchors2.go  /START RUN OMIT/,/END RUN OMIT/
+
+
+## Anchors - YAML Magic - Practical
+
+A notable real-world user of this is `docker-compose`
+
+.link https://docs.docker.com/compose/compose-file/10-fragments/#example-4
+
+YAML
+
+.code examples/unique/anchors3.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/anchors3.go  /START RUN OMIT/,/END RUN OMIT/
+
+## Document Separators - YAML Streaming
+
+Yaml can use `---` to separate documents in a stream
+
+YAML
+
+.code examples/unique/document-separators.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/document-separators.go  /START RUN OMIT/,/END RUN OMIT/
+
+
+## Stream Separators - YAML Streaming
+
+Yaml can use `...` to end a stream. This removes abiguity around missing data or
+connection closures
+
+YAML
+
+.code examples/unique/document-separators2.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/document-separators2.go  /START RUN OMIT/,/END RUN OMIT/
+
+## Document Separators - YAML Streaming
+
+Multiple streams are possible in one data source. This is useful for things
+like bursts of messages over a long-lived connection
+
+YAML
+
+.code examples/unique/document-separators3.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/unique/document-separators3.go  /START RUN OMIT/,/END RUN OMIT/
+
+## Document Separators - Practical
+
+Starting files with `---` makes it possible to easily use concatination for composition
+of resurces. This is why I almost always do it in every yaml I write
+
+YAML
+
+.code examples/unique/document-separators4.go /START USER1 OMIT/,/END USER1 OMIT/
+
+YAML
+
+.code examples/unique/document-separators4.go /START USER2 OMIT/,/END USER2 OMIT/
+
+YAML
+
+.code examples/unique/document-separators4.go /START USER3 OMIT/,/END USER3 OMIT/
+
+Easy composition by just concating files.
+
+.code examples/unique/document-separators4.go /START BASH OMIT/,/END BASH OMIT/
+
+## Nesting
+
+Occasionally you might want to use long strings to nest data structures inside others.
+This kind of string based nesting is a common escape hatch for strict data structures.
+
+---
+
+Task: make a map with
+
+* "type" is a string containing the type of data.
+* "data" is a nested map containing
+  * "str" with a string value of `"Hello world"` (literal quotes are in the string)
+  * "bool" containing a bool value of `true`
+
+JSON
+
+.code examples/nesting/example.json
+
+## Nesting - Examples
+
+JSON
+
+.code examples/nesting/example.go /START JSON OMIT/,/END JSON OMIT/
+
+YAML
+
+.code examples/nesting/example.go /START YAML OMIT/,/END YAML OMIT/
+
+TOML
+
+.code examples/nesting/example.go /START TOML OMIT/,/END TOML OMIT/
+
+HCL
+
+.code examples/nesting/example.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/nesting/example.go /START RUN OMIT/,/END RUN OMIT/
+
+## Nesting - JSON
+
+JSON
+
+.code examples/nesting/json.go /START JSON OMIT/,/END JSON OMIT/
+
+.play examples/nesting/json.go  /START RUN OMIT/,/END RUN OMIT
+
+## Nesting - YAML
+
+JSON
+
+.code examples/nesting/yaml.go /START YAML OMIT/,/END YAML OMIT/
+
+.play examples/nesting/yaml.go  /START RUN OMIT/,/END RUN OMIT
+
+## Nesting - TOML
+
+TOML
+
+.code examples/nesting/toml.go /START TOML OMIT/,/END TOML OMIT/
+
+.play examples/nesting/toml.go  /START RUN OMIT/,/END RUN OMIT
+
+## Nesting - HCL - Exact
+
+The only way to get the *exact* same map of strings in HCL is
+to use double quotes and escapes.
+
+HCL
+
+.code examples/nesting/hcl.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/nesting/hcl.go  /START RUN OMIT/,/END RUN OMIT
+
+## Nesting - HCL - Added Trailing Newlines
+
+HCL
+
+.code examples/nesting/hcl2.go /START HCL OMIT/,/END HCL OMIT/
+
+.play examples/nesting/hcl2.go  /START RUN OMIT/,/END RUN OMIT
+
+## Bonus - jq & jy
+
+While not a feature of the formats themselves. `jq`, and to a lesser extent `yq`,
+are both massively useful tools that you should be using.
+
+.link https://jqlang.github.io/jq/
+
+.link https://github.com/mikefarah/yq
+
+If you are handling json or yaml files on the command line, you *need* these tools
+
+## Wrapping Up - JSON
+
+* One way to JSON, get used to it or get out
+* Can be readable enough with only short and simple strings
+
+## Wrapping Up - YAML
+
+* Very flexible
+* Maybe too flexible
+* When in doubt, disambiguate/quote
+* Can always just put JSON in any field
+* Anchors are amazing
+* Native concept of streaming
+
+## Wrapping Up - TOML
+
+* Great for simple use cases
+* Dot notation is super useful
+* Lists of objects can be a bit weird
+
+## Wrapping Up - HCL
+
+* Pretty good mix of all others
+* Too often falls back on terraform functions
+

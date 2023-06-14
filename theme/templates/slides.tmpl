@@ -1,0 +1,263 @@
+{/* This is the slide template. It defines how presentations are formatted. */}
+
+{{define "root"}}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{.Title}}</title>
+    <meta charset='utf-8'>
+    <script>
+      var notesEnabled = {{.NotesEnabled}};
+    </script>
+    <script src='/static/slides.js'></script>
+
+    <!-- install highlight.js -->
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
+    <script>
+    // find the first div after each p with the contents of "JSON Example"
+    // and add the right class to enable json highlighting
+    document.addEventListener("DOMContentLoaded", function() {
+      var examples = document.querySelectorAll("p");
+      for (var i = 0; i < examples.length; i++) {
+        var updated = false;
+        if (examples[i].textContent == "JSON") {
+          el = examples[i].nextElementSibling;
+          el.classList.add("language-json");
+          updated = true;
+        }
+        if (examples[i].textContent == "YAML") {
+          el = examples[i].nextElementSibling;
+          el.classList.add("language-yaml");
+          updated = true;
+        }
+        if (examples[i].textContent == "TOML") {
+          el = examples[i].nextElementSibling;
+          el.classList.add("language-toml");
+          updated = true;
+        }
+        if (examples[i].textContent == "HCL") {
+          el = examples[i].nextElementSibling;
+          el.classList.add("language-ruby");
+          updated = true;
+        }
+        if (updated) {
+          hljs.highlightElement(el);
+          el.style.whiteSpace = "pre";
+          el.style.margin = "0";
+          el.style.padding = "0";
+
+          var table = document.createElement("table");
+          table.style.margin = "0";
+          table.style.padding = "0";
+          table.style.width = "100%";
+          var tr = document.createElement("tr");
+
+          var title = document.createElement("td");
+          // center the title vertically and horizontally
+          title.style.verticalAlign = "middle";
+          title.style.textAlign = "center";
+          title.style.width = "4em";
+          title.style.padding = "0";
+          title.style.paddingRight = "1em";
+          title.style.margin = "0";
+          title.style.border = "0";
+          var p = document.createElement("p");
+          p.textContent = examples[i].textContent;
+          title.appendChild(p);
+          tr.appendChild(title);
+
+          var td = document.createElement("td");
+          td.style.border = "0";
+          td.style.padding = "0";
+          td.style.display = "flex";
+          // move all the children of el into a pre tag
+          var pre = document.createElement("pre");
+          pre.style.margin = "0";
+          pre.style.padding = "0";
+          pre.style.border = "0";
+          pre.style.overflow = "auto";
+          pre.style.flexGrow = "1";
+          pre.style.maxWidth = "35em";
+          while (el.firstChild) {
+            pre.appendChild(el.firstChild);
+          }
+
+          td.appendChild(pre);
+          tr.appendChild(td);
+
+          // if there is a quote block after the example add it as a child of
+          // the td
+          var quote = examples[i].nextElementSibling.nextElementSibling;
+          if (quote && quote.tagName == "BLOCKQUOTE") {
+            quote.style.fontSize = "1em";
+            quote.style.margin = "0";
+            quote.style.padding = "0";
+            quote.style.width = "50%";
+            quote.style.display = "flex";
+            quote.style.alignItems = "center";
+            quote.style.textAlign = "center";
+            td.appendChild(quote);
+          }
+
+          // if there is a quote block after the example, add it to the row
+          // var td = document.createElement("td");
+          // td.style.border = "0";
+          // td.style.padding = "0";
+          // td.style.margin = "0";
+          // td.style.verticalAlign = "middle";
+          // td.style.textAlign = "center";
+          // td.style.fontSize = "1em";
+          // var quote = examples[i].nextElementSibling.nextElementSibling;
+          // if (quote && quote.tagName == "BLOCKQUOTE") {
+          //   quote.style.fontSize = "1em";
+          //   quote.style.margin = "0";
+          //   quote.style.marginLeft = "1em";
+          //   quote.style.padding = "0";
+          //   td.appendChild(quote);
+          // } else {
+          //   td.textContent = " ";
+          // }
+          // tr.appendChild(td);
+
+          table.appendChild(tr);
+          examples[i].parentNode.insertBefore(table, examples[i].nextSibling);
+          examples[i].parentNode.removeChild(examples[i]);
+        }
+      }
+
+      // hide all "div" elements with both "code" and "playground" classes
+      // if they have a child pre with a child span of the content "// Run it!"
+      var playgrounds = document.querySelectorAll("div.code.playground");
+      for (var i = 0; i < playgrounds.length; i++) {
+        var playground = playgrounds[i];
+        // check all child pre elements for a span with the content "// Run it!"
+        var pres = playground.querySelectorAll("pre");
+        for (var j = 0; j < pres.length; j++) {
+          var pre = pres[j];
+          var spans = pre.querySelectorAll("span");
+          for (var k = 0; k < spans.length; k++) {
+            var span = spans[k];
+            if (span.textContent == "// Run it!") {
+              playground.style.display = "none";
+            }
+          }
+        }
+      }
+
+      // iterate over all buttons with class "run" and put them at the top right
+      // of the page
+      var buttons = document.querySelectorAll("button.run");
+      for (var i = 0; i < buttons.length; i++) {
+        var button = buttons[i];
+        button.textContent = "▶";
+        button.style.backgroundColor = "black";
+        button.style.color = "white";
+        button.style.fontSize = "2em";
+        button.style.position = "fixed";
+        button.style.top = "0";
+        button.style.right = "0";
+        button.style.margin = "0";
+        button.style.padding = "5px";
+        button.classList.add("no-print");
+      }
+    });
+    </script>
+
+
+    {{if .NotesEnabled}}
+    <script>
+      var sections = {{.Sections}};
+      var titleNotes = {{.TitleNotes}}
+    </script>
+    <script src='/static/notes.js'></script>
+    {{end}}
+
+    <script>
+      // Initialize Google Analytics tracking code on production site only.
+      if (window["location"] && window["location"]["hostname"] == "talks.golang.org") {
+        var _gaq = _gaq || [];
+        _gaq.push(["_setAccount", "UA-11222381-6"]);
+        _gaq.push(["b._setAccount", "UA-49880327-6"]);
+        window.trackPageview = function() {
+          _gaq.push(["_trackPageview", location.pathname+location.hash]);
+          _gaq.push(["b._trackPageview", location.pathname+location.hash]);
+        };
+        window.trackPageview();
+        window.trackEvent = function(category, action, opt_label, opt_value, opt_noninteraction) {
+          _gaq.push(["_trackEvent", category, action, opt_label, opt_value, opt_noninteraction]);
+          _gaq.push(["b._trackEvent", category, action, opt_label, opt_value, opt_noninteraction]);
+        };
+      }
+    </script>
+  </head>
+
+  <body style='display: none'>
+
+    <section class='slides layout-widescreen fullscreen'>
+
+      <article>
+        <h1>{{.Title}}</h1>
+        {{with .Subtitle}}<h3>{{.}}</h3>{{end}}
+        {{if not .Time.IsZero}}<h3>{{.Time.Format "2 January 2006"}}</h3>{{end}}
+        {{range .Authors}}
+          <div class="presenter">
+            {{range .TextElem}}{{elem $.Template .}}{{end}}
+          </div>
+        {{end}}
+      </article>
+
+  {{range $i, $s := .Sections}}
+  <!-- start of slide {{$s.Number}} -->
+      <article {{$s.HTMLAttributes}}>
+      {{if $s.Elem}}
+        <h3>{{$s.Title}}</h3>
+        {{range $s.Elem}}{{elem $.Template .}}{{end}}
+      {{else}}
+        <h2>{{$s.Title}}</h2>
+      {{end}}
+      <span class="pagenumber">{{pagenum $s 1}}</span>
+      </article>
+  <!-- end of slide {{$s.Number}} -->
+  {{end}}{{/* of Slide block */}}
+
+      <article>
+        <h3>Thank you</h3>
+        {{range .Authors}}
+          <div class="presenter">
+            {{range .Elem}}{{elem $.Template .}}{{end}}
+          </div>
+        {{end}}
+      </article>
+
+    </section>
+
+    <div id="help">
+      Use the left and right arrow keys or click the left and right
+      edges of the page to navigate between slides.<br>
+      (Press 'H' or navigate to hide this message.)
+    </div>
+
+    {{if .PlayEnabled}}
+    <script src='/play.js'></script>
+    {{end}}
+
+    <script>
+      (function() {
+        // Load Google Analytics tracking code on production site only.
+        if (window["location"] && window["location"]["hostname"] == "talks.golang.org") {
+          var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
+          ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+          var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
+        }
+      })();
+    </script>
+  </body>
+</html>
+{{end}}
+
+{{define "newline"}}
+<br>
+{{end}}

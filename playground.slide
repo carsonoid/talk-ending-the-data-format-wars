@@ -1,0 +1,25 @@
+# Ending The Data Format Wars - Playgrounds
+Truce time
+
+Carson Anderson
+DevX-O, Weave
+@carson_ops
+
+https://github.com/carsonoid/talk-ending-the-data-format-wars
+
+## JSON Playground
+
+.play -edit examples/primer-json.go /START JSON OMIT/,/END JSON OMIT/
+
+## YAML Playground
+
+.play -edit examples/primer-yaml.go /START YAML OMIT/,/END YAML OMIT/
+
+## TOML Playground
+
+.play -edit examples/primer-toml.go /START TOML OMIT/,/END TOML OMIT/
+
+## HCL Playground
+
+.play -edit examples/primer-hcl.go /START HCL OMIT/,/END HCL OMIT/
+
